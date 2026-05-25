@@ -1,0 +1,81 @@
+name: Visual regression report
+
+# Compares the storefront against the committed baselines and publishes the
+# Playwright HTML report (expected / actual / diff) to GitHub Pages, so the
+# team can review changes at a single link — no tools to install.
+#
+# Run it from the Actions tab ("Run workflow"), optionally pointing it at a
+# theme preview URL. It also runs weekly to catch production drift.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Site to test (e.g. a theme preview URL). Leave as-is for production."
+        default: "https://sloy.pl"
+        required: false
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deployment at a time; don't cancel an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # Pinned to the installed @playwright/test version so CI renders pixels
+    # identically to the baselines captured by the "Update baselines" workflow.
+    container:
+      image: mcr.microsoft.com/playwright:v1.60.0-noble
+    outputs:
+      result: ${{ steps.compare.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - name: Compare against baselines
+        id: compare
+        continue-on-error: true # publish the report even when diffs are found
+        env:
+          BASE_URL: ${{ inputs.base_url || 'https://sloy.pl' }}
+        run: npm test
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 30
+
+  deploy:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: playwright-report
+      - id: deploy
+        uses: actions/deploy-pages@v4
+      - name: Summary
+        run: |
+          if [ "${{ needs.test.outputs.result }}" = "failure" ]; then
+            echo "⚠️ Visual differences found — review the report:" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "✅ No visual differences." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "${{ steps.deploy.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"

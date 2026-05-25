@@ -1,0 +1,43 @@
+name: Update baselines
+
+# (Re)captures the baseline screenshots on the same Linux environment that the
+# report workflow uses, then commits them. Run this once after pushing the repo
+# (the initial baselines were captured on macOS and won't match Linux), and
+# again whenever an intentional design change makes the current diffs expected.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Site to capture baselines from. Leave as-is for production."
+        default: "https://sloy.pl"
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.60.0-noble
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trust the workspace (container runs as root)
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - run: npm ci
+      - name: Capture baselines
+        env:
+          BASE_URL: ${{ inputs.base_url || 'https://sloy.pl' }}
+        run: npm run snapshot
+      - name: Commit updated baselines
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/__screenshots__
+          if git diff --cached --quiet; then
+            echo "No baseline changes to commit."
+          else
+            git commit -m "Update visual baselines (Linux/CI)"
+            git push
+          fi

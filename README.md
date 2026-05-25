@@ -77,6 +77,43 @@ already masks `#product-grid` for this reason. When a clean re-run produces a
 diff, open the report, identify the noisy region, and add it to `mask` rather
 than raising the global pixel tolerance.
 
+## Sharing diff reports with the team (GitHub Pages)
+
+Non-technical teammates review changes at a single link — no install, no CLI.
+Two GitHub Actions workflows drive it:
+
+- **Update baselines** (`.github/workflows/update-baselines.yml`) — captures the
+  baselines on the same Linux environment CI uses, then commits them. Run it
+  **once after the first push** (the committed baselines were captured on macOS
+  and won't match Linux rendering), and again whenever an intentional design
+  change should become the new normal.
+- **Visual regression report** (`.github/workflows/visual-report.yml`) — compares
+  the site against the baselines and publishes the Playwright HTML report
+  (expected / actual / highlighted diff) to GitHub Pages. Runs on demand and
+  weekly. You can pass a theme **preview URL** when starting it manually.
+
+### One-time setup
+
+1. In the repo: **Settings → Pages → Build and deployment → Source = GitHub
+   Actions**.
+2. **Actions tab → Update baselines → Run workflow** (regenerates Linux
+   baselines and commits them).
+3. **Actions tab → Visual regression report → Run workflow** — when it finishes,
+   the published URL is in the run summary and at Settings → Pages. Share that
+   link with the team; it always shows the latest comparison.
+
+> The Pages site is publicly reachable by anyone with the link. The storefront
+> is already public, so the screenshots aren't sensitive — but the URL is not
+> gated behind a GitHub login.
+
+### Reviewing a theme change
+
+Deploy/preview the new theme, then **Run workflow** on *Visual regression
+report* (paste the preview URL if testing a preview). Open the link: pages with
+no change show green; changed pages show expected vs actual vs diff side by
+side. If a change is intentional, run *Update baselines* to make it the new
+normal.
+
 ## Notes
 
 - Runs are **serialized** (`workers: 1`) with 2 retries to stay gentle on the
