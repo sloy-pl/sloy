@@ -29,6 +29,10 @@ export default defineConfig({
     // A real-ish UA avoids bot-detection oddities on the storefront.
     userAgent:
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    // Attach a full-page screenshot to EVERY test (pass or fail), so the HTML
+    // report is also a browsable gallery of how each page currently looks —
+    // not just a diff viewer that's empty when nothing changed.
+    screenshot: { mode: "on", fullPage: true },
   },
   expect: {
     toHaveScreenshot: {

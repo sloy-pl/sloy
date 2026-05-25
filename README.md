@@ -109,10 +109,14 @@ Two GitHub Actions workflows drive it:
 ### Reviewing a theme change
 
 Deploy/preview the new theme, then **Run workflow** on *Visual regression
-report* (paste the preview URL if testing a preview). Open the link: pages with
-no change show green; changed pages show expected vs actual vs diff side by
-side. If a change is intentional, run *Update baselines* to make it the new
-normal.
+report* (paste the preview URL if testing a preview). Open the link and click
+any page to see its full-page screenshot. Pages with no change show green;
+changed pages additionally show **expected vs actual vs diff** side by side. If
+a change is intentional, run *Update baselines* to make it the new normal.
+
+Every test attaches a full-page screenshot (`screenshot: 'on'` in the config),
+so the report is also a gallery of the current look — not just a diff viewer
+that's blank when nothing changed.
 
 ## Notes
 
