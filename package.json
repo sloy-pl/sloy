@@ -1,0 +1,15 @@
+{
+  "name": "sloy-visual-regression",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Visual regression screenshots for the sloy.pl Shopify theme",
+  "type": "module",
+  "scripts": {
+    "snapshot": "playwright test --update-snapshots",
+    "test": "playwright test",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
