@@ -1,0 +1,1010 @@
+{% doc %}
+  @prompt
+    I want to generate tabs with the category names. After clicking a tab a collapsible contant should appear.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-faq-tabs-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .ai-faq-tabs__heading-{{ ai_gen_id }} {
+    font-family: {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+    font-weight: {{ block.settings.heading_font.weight }};
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    text-align: {{ block.settings.heading_alignment }};
+    margin: 0 0 32px;
+  }
+
+  .ai-faq-tabs__tab-list-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+    border-bottom: 2px solid {{ block.settings.tab_border_color }};
+  }
+
+  .ai-faq-tabs__tab-{{ ai_gen_id }} {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-family: {{ block.settings.tab_font.family }}, {{ block.settings.tab_font.fallback_families }};
+    font-weight: {{ block.settings.tab_font.weight }};
+    font-size: {{ block.settings.tab_font_size }}px;
+    color: {{ block.settings.tab_text_color }};
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    margin-bottom: -2px;
+  }
+
+  .ai-faq-tabs__tab-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.tab_active_color }};
+  }
+
+  .ai-faq-tabs__tab-{{ ai_gen_id }}.active {
+    color: {{ block.settings.tab_active_color }};
+    border-bottom-color: {{ block.settings.tab_active_color }};
+  }
+
+  .ai-faq-tabs__panel-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-faq-tabs__panel-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .ai-faq-tabs__item-{{ ai_gen_id }} {
+    border-bottom: 1px solid {{ block.settings.item_border_color }};
+  }
+
+  .ai-faq-tabs__item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-faq-tabs__question-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 20px 48px 20px 0;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: {{ block.settings.question_font.family }}, {{ block.settings.question_font.fallback_families }};
+    font-weight: {{ block.settings.question_font.weight }};
+    font-size: {{ block.settings.question_font_size }}px;
+    color: {{ block.settings.question_color }};
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .ai-faq-tabs__question-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.question_hover_color }};
+  }
+
+  .ai-faq-tabs__question-icon-{{ ai_gen_id }} {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-faq-tabs__question-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: {{ block.settings.icon_color }};
+  }
+
+  .ai-faq-tabs__question-{{ ai_gen_id }}[aria-expanded="true"] .ai-faq-tabs__question-icon-{{ ai_gen_id }} {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .ai-faq-tabs__answer-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .ai-faq-tabs__answer-content-{{ ai_gen_id }} {
+    padding: 0 0 20px 0;
+    font-family: {{ block.settings.answer_font.family }}, {{ block.settings.answer_font.fallback_families }};
+    font-weight: {{ block.settings.answer_font.weight }};
+    font-size: {{ block.settings.answer_font_size }}px;
+    color: {{ block.settings.answer_color }};
+    line-height: 1.6;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-faq-tabs-{{ ai_gen_id }} {
+      padding: 32px 16px;
+    }
+
+    .ai-faq-tabs__heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.8);
+      margin-bottom: 24px;
+    }
+
+    .ai-faq-tabs__tab-{{ ai_gen_id }} {
+      padding: 10px 16px;
+      font-size: calc({{ block.settings.tab_font_size }}px * 0.9);
+    }
+
+    .ai-faq-tabs__question-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.question_font_size }}px * 0.9);
+    }
+
+    .ai-faq-tabs__answer-content-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.answer_font_size }}px * 0.9);
+    }
+  }
+{% endstyle %}
+
+<faq-tabs-{{ ai_gen_id }} class="ai-faq-tabs-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.heading != blank %}
+    <h2 class="ai-faq-tabs__heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+  {% endif %}
+
+  <div class="ai-faq-tabs__tab-list-{{ ai_gen_id }}" role="tablist">
+    {% for i in (1..5) %}
+      {% assign category_key = 'category_' | append: i | append: '_name' %}
+      {% assign category_name = block.settings[category_key] %}
+      
+      {% if category_name != blank %}
+        <button
+          class="ai-faq-tabs__tab-{{ ai_gen_id }} {% if i == 1 %}active{% endif %}"
+          role="tab"
+          aria-selected="{% if i == 1 %}true{% else %}false{% endif %}"
+          aria-controls="ai-faq-panel-{{ ai_gen_id }}-{{ i }}"
+          id="ai-faq-tab-{{ ai_gen_id }}-{{ i }}"
+          data-tab="{{ i }}"
+        >
+          {{ category_name }}
+        </button>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% for i in (1..5) %}
+    {% assign category_key = 'category_' | append: i | append: '_name' %}
+    {% assign category_name = block.settings[category_key] %}
+    
+    {% if category_name != blank %}
+      <div
+        class="ai-faq-tabs__panel-{{ ai_gen_id }} {% if i == 1 %}active{% endif %}"
+        role="tabpanel"
+        id="ai-faq-panel-{{ ai_gen_id }}-{{ i }}"
+        aria-labelledby="ai-faq-tab-{{ ai_gen_id }}-{{ i }}"
+      >
+        {% for j in (1..10) %}
+          {% assign question_key = 'category_' | append: i | append: '_q' | append: j %}
+          {% assign answer_key = 'category_' | append: i | append: '_a' | append: j %}
+          {% assign question = block.settings[question_key] %}
+          {% assign answer = block.settings[answer_key] %}
+          
+          {% if question != blank and answer != blank %}
+            <div class="ai-faq-tabs__item-{{ ai_gen_id }}">
+              <button
+                class="ai-faq-tabs__question-{{ ai_gen_id }}"
+                aria-expanded="false"
+                aria-controls="ai-faq-answer-{{ ai_gen_id }}-{{ i }}-{{ j }}"
+              >
+                {{ question }}
+                <span class="ai-faq-tabs__question-icon-{{ ai_gen_id }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </button>
+              <div
+                class="ai-faq-tabs__answer-{{ ai_gen_id }}"
+                id="ai-faq-answer-{{ ai_gen_id }}-{{ i }}-{{ j }}"
+              >
+                <div class="ai-faq-tabs__answer-content-{{ ai_gen_id }}">
+                  {{ answer }}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</faq-tabs-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FaqTabs{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.tabs = this.querySelectorAll('.ai-faq-tabs__tab-{{ ai_gen_id }}');
+        this.panels = this.querySelectorAll('.ai-faq-tabs__panel-{{ ai_gen_id }}');
+        this.questions = this.querySelectorAll('.ai-faq-tabs__question-{{ ai_gen_id }}');
+        
+        this.setupTabs();
+        this.setupAccordions();
+      }
+
+      setupTabs() {
+        this.tabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const tabNumber = tab.getAttribute('data-tab');
+            
+            this.tabs.forEach((t) => {
+              t.classList.remove('active');
+              t.setAttribute('aria-selected', 'false');
+            });
+            
+            this.panels.forEach((p) => {
+              p.classList.remove('active');
+            });
+            
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            
+            const activePanel = this.querySelector('#ai-faq-panel-{{ ai_gen_id }}-' + tabNumber);
+            if (activePanel) {
+              activePanel.classList.add('active');
+            }
+          });
+        });
+      }
+
+      setupAccordions() {
+        this.questions.forEach((question) => {
+          question.addEventListener('click', () => {
+            const answerId = question.getAttribute('aria-controls');
+            const answer = this.querySelector('#' + answerId);
+            const isExpanded = question.getAttribute('aria-expanded') === 'true';
+            
+            if (isExpanded) {
+              question.setAttribute('aria-expanded', 'false');
+              answer.style.maxHeight = '0';
+            } else {
+              question.setAttribute('aria-expanded', 'true');
+              answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('faq-tabs-{{ ai_gen_id }}', FaqTabs{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ tabs",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "montserrat_n6"
+    },
+    {
+      "type": "header",
+      "content": "Tabs"
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab font size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Tab text color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Active tab color",
+      "default": "#ff850c"
+    },
+    {
+      "type": "color",
+      "id": "tab_border_color",
+      "label": "Tab border color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "font_picker",
+      "id": "tab_font",
+      "label": "Tab font",
+      "default": "montserrat_n6"
+    },
+    {
+      "type": "header",
+      "content": "Questions"
+    },
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Question font size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Question hover color",
+      "default": "#ff850c"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "font_picker",
+      "id": "question_font",
+      "label": "Question font",
+      "default": "montserrat_n6"
+    },
+    {
+      "type": "header",
+      "content": "Answers"
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Answer font size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer color",
+      "default": "#666666"
+    },
+    {
+      "type": "font_picker",
+      "id": "answer_font",
+      "label": "Answer font",
+      "default": "montserrat_n4"
+    },
+    {
+      "type": "color",
+      "id": "item_border_color",
+      "label": "Item border color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "header",
+      "content": "Category 1"
+    },
+    {
+      "type": "text",
+      "id": "category_1_name",
+      "label": "Category name",
+      "default": "General"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q1",
+      "label": "Question 1"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a1",
+      "label": "Answer 1"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q2",
+      "label": "Question 2"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a2",
+      "label": "Answer 2"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q3",
+      "label": "Question 3"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a3",
+      "label": "Answer 3"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q4",
+      "label": "Question 4"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a4",
+      "label": "Answer 4"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q5",
+      "label": "Question 5"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a5",
+      "label": "Answer 5"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q6",
+      "label": "Question 6"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a6",
+      "label": "Answer 6"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q7",
+      "label": "Question 7"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a7",
+      "label": "Answer 7"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q8",
+      "label": "Question 8"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a8",
+      "label": "Answer 8"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q9",
+      "label": "Question 9"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a9",
+      "label": "Answer 9"
+    },
+    {
+      "type": "text",
+      "id": "category_1_q10",
+      "label": "Question 10"
+    },
+    {
+      "type": "richtext",
+      "id": "category_1_a10",
+      "label": "Answer 10"
+    },
+    {
+      "type": "header",
+      "content": "Category 2"
+    },
+    {
+      "type": "text",
+      "id": "category_2_name",
+      "label": "Category name",
+      "default": "Shipping"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q1",
+      "label": "Question 1"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a1",
+      "label": "Answer 1"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q2",
+      "label": "Question 2"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a2",
+      "label": "Answer 2"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q3",
+      "label": "Question 3"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a3",
+      "label": "Answer 3"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q4",
+      "label": "Question 4"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a4",
+      "label": "Answer 4"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q5",
+      "label": "Question 5"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a5",
+      "label": "Answer 5"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q6",
+      "label": "Question 6"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a6",
+      "label": "Answer 6"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q7",
+      "label": "Question 7"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a7",
+      "label": "Answer 7"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q8",
+      "label": "Question 8"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a8",
+      "label": "Answer 8"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q9",
+      "label": "Question 9"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a9",
+      "label": "Answer 9"
+    },
+    {
+      "type": "text",
+      "id": "category_2_q10",
+      "label": "Question 10"
+    },
+    {
+      "type": "richtext",
+      "id": "category_2_a10",
+      "label": "Answer 10"
+    },
+    {
+      "type": "header",
+      "content": "Category 3"
+    },
+    {
+      "type": "text",
+      "id": "category_3_name",
+      "label": "Category name",
+      "default": "Returns"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q1",
+      "label": "Question 1"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a1",
+      "label": "Answer 1"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q2",
+      "label": "Question 2"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a2",
+      "label": "Answer 2"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q3",
+      "label": "Question 3"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a3",
+      "label": "Answer 3"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q4",
+      "label": "Question 4"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a4",
+      "label": "Answer 4"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q5",
+      "label": "Question 5"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a5",
+      "label": "Answer 5"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q6",
+      "label": "Question 6"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a6",
+      "label": "Answer 6"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q7",
+      "label": "Question 7"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a7",
+      "label": "Answer 7"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q8",
+      "label": "Question 8"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a8",
+      "label": "Answer 8"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q9",
+      "label": "Question 9"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a9",
+      "label": "Answer 9"
+    },
+    {
+      "type": "text",
+      "id": "category_3_q10",
+      "label": "Question 10"
+    },
+    {
+      "type": "richtext",
+      "id": "category_3_a10",
+      "label": "Answer 10"
+    },
+    {
+      "type": "header",
+      "content": "Category 4"
+    },
+    {
+      "type": "text",
+      "id": "category_4_name",
+      "label": "Category name",
+      "default": "Products"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q1",
+      "label": "Question 1"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a1",
+      "label": "Answer 1"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q2",
+      "label": "Question 2"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a2",
+      "label": "Answer 2"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q3",
+      "label": "Question 3"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a3",
+      "label": "Answer 3"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q4",
+      "label": "Question 4"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a4",
+      "label": "Answer 4"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q5",
+      "label": "Question 5"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a5",
+      "label": "Answer 5"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q6",
+      "label": "Question 6"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a6",
+      "label": "Answer 6"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q7",
+      "label": "Question 7"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a7",
+      "label": "Answer 7"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q8",
+      "label": "Question 8"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a8",
+      "label": "Answer 8"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q9",
+      "label": "Question 9"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a9",
+      "label": "Answer 9"
+    },
+    {
+      "type": "text",
+      "id": "category_4_q10",
+      "label": "Question 10"
+    },
+    {
+      "type": "richtext",
+      "id": "category_4_a10",
+      "label": "Answer 10"
+    },
+    {
+      "type": "header",
+      "content": "Category 5"
+    },
+    {
+      "type": "text",
+      "id": "category_5_name",
+      "label": "Category name",
+      "default": "Payment"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q1",
+      "label": "Question 1"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a1",
+      "label": "Answer 1"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q2",
+      "label": "Question 2"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a2",
+      "label": "Answer 2"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q3",
+      "label": "Question 3"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a3",
+      "label": "Answer 3"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q4",
+      "label": "Question 4"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a4",
+      "label": "Answer 4"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q5",
+      "label": "Question 5"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a5",
+      "label": "Answer 5"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q6",
+      "label": "Question 6"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a6",
+      "label": "Answer 6"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q7",
+      "label": "Question 7"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a7",
+      "label": "Answer 7"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q8",
+      "label": "Question 8"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a8",
+      "label": "Answer 8"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q9",
+      "label": "Question 9"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a9",
+      "label": "Answer 9"
+    },
+    {
+      "type": "text",
+      "id": "category_5_q10",
+      "label": "Question 10"
+    },
+    {
+      "type": "richtext",
+      "id": "category_5_a10",
+      "label": "Answer 10"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ tabs"
+    }
+  ]
+}
+{% endschema %}

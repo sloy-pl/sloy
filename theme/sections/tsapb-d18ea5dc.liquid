@@ -1,0 +1,736 @@
+<!-- --VERSION-30-- -->
+
+{% style %}
+:root {
+--vtl-neutral-100: #222;
+--vtl-neutral-70: #5e5e5e;
+--vtl-neutral-01: #fff;
+--vtl-blue-100: #0071e9;
+--vtl-size-1: 1px;
+--vtl-size-2: 2px;
+--vtl-size-4: 4px;
+--vtl-size-6: 6px;
+--vtl-size-8: 8px;
+--vtl-size-12: 12px;
+--vtl-size-14: 14px;
+--vtl-size-16: 16px;
+--vtl-size-20: 20px;
+--vtl-size-24: 24px;
+--vtl-size-32: 32px;
+--vtl-size-40: 40px;
+--vtl-size-48: 48px;
+--vtl-font-weight-400: 400;
+--vtl-line-height-140: 1.4;
+--vtl-text-decoration-none: none;
+--vtl-border-radius-4: var(--vtl-size-4);
+--vtl-border-width-1: var(--vtl-size-1);
+--vtl-border-width-2: var(--vtl-size-2);
+--vtl-color-bg-fill-inverse-on-light: var(--vtl-neutral-01);
+--vtl-color-text-disable-on-light: var(--vtl-neutral-70);
+--vtl-color-border-default-on-light: var(--vtl-neutral-100);
+--vtl-color-border-focus-on-light: var(--vtl-blue-100);
+--vtl-space-2: var(--vtl-size-2);
+--vtl-space-6: var(--vtl-size-6);
+--vtl-space-8: var(--vtl-size-8);
+--vtl-space-12: var(--vtl-size-12);
+--vtl-space-16: var(--vtl-size-16);
+--vtl-space-20: var(--vtl-size-20);
+--vtl-space-24: var(--vtl-size-24);
+--vtl-space-32: var(--vtl-size-32);
+--vtl-space-40: var(--vtl-size-40);
+--vtl-space-48: var(--vtl-size-48);
+--vtl-font-size-12: var(--vtl-size-12);
+--vtl-font-size-14: var(--vtl-size-14);
+--vtl-font-size-16: var(--vtl-size-16);
+}
+
+
+{% endstyle %}
+
+<!-- --UUID-d18ea5dc-- -->
+
+{%- liquid
+	assign heading_block = section.blocks | where: "type", "heading" | first
+	assign has_heading = true
+	if heading_block == blank or heading_block.settings.title == blank
+		assign has_heading = false
+	endif
+-%}
+
+<section
+	class="
+		Vtls-{{ section.id | handle }}
+		{% if section.settings.section_background_style == 'color' %}Vtls-{{ section.id | handle }}--hasBackground{% endif %}
+		{% if section.settings.section_background_style == 'gradient' %}Vtls-{{ section.id | handle }}--hasGradient{% endif %}
+		{% if section.settings.section_background_style == 'gradient' and section.settings.section_background_animation %}Vtls-{{ section.id | handle }}--hasAnimation{% endif %}
+	"
+	{% if has_heading %}
+		aria-labelledby="VtlsFaqHeading-{{ section.id }}"
+	{% else %}
+		aria-label="Frequently Asked Questions"
+	{% endif %}
+>
+	<vtls-faq>
+		<div class="VtlsContainer">
+			{% for block in section.blocks %}
+				{% case block.type %}
+					{% when "heading" %}
+						<h2 class="VtlsHeading" id="VtlsFaqHeading-{{ section.id }}" {{ block.shopify_attributes }}>
+							{{ block.settings.title }}
+						</h2>
+					{% when "question" %}
+						<div
+							class="VtlsItem {% if section.settings.showLineSeparator %} VtlsItem--hasDivider{% endif %}"
+							{{ block.shopify_attributes }}
+						>
+							<input
+								style="display:none!important;"
+								type="checkbox"
+								id="toggle-{{ section.id | handle }}-{{forloop.index}}"
+								class="VtlsItem__Toggle"
+								{% if request.design_mode == true %}
+									checked
+								{% endif %}
+							>
+							<label
+								for="toggle-{{ section.id | handle }}-{{forloop.index}}"
+								class="VtlsItem__Summary"
+								id="VtlsFaqSummary-{{ section.id }}-{{ forloop.index }}"
+								role="button"
+								tabindex="0"
+								aria-controls="VtlsFaqPanel-{{ section.id }}-{{ forloop.index }}"
+								aria-expanded="{% if request.design_mode %}true{% else %}false{% endif %}"
+							>
+								{{ block.settings.question }}
+							</label>
+							<div
+								class="VtlsItem__Answer"
+								id="VtlsFaqPanel-{{ section.id }}-{{ forloop.index }}"
+								aria-labelledby="VtlsFaqSummary-{{ section.id }}-{{ forloop.index }}"
+								aria-hidden="{% if request.design_mode %}false{% else %}true{% endif %}"
+							>
+								{{ block.settings.answer }}
+								{% if block.settings.buttonCheckbox %}
+									{% capture btn_style %}
+									{%- case block.settings.buttonStyle -%}
+										{%- when 'filled' -%}
+											color: {{ block.settings.buttonTextColor }};
+											background-color: {{ block.settings.buttonColor }};
+											border-radius: {{ block.settings.buttonCornerRadius }}px;
+										{%- when 'outline' -%}
+											color: {{ block.settings.buttonColor }};
+											border: var(--vtl-border-width-1) solid {{ block.settings.buttonColor }};
+											border-radius: {{ block.settings.buttonCornerRadius }}px;
+									{%- endcase -%}
+								{% endcapture %}
+
+									<div class="VtlsButton">
+										<a
+											href="{{ block.settings.buttonLink }}"
+											class="VtlsButton__Link VtlsButton__Link--{{ block.settings.buttonSize }}"
+											style="{{ btn_style }}"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											{{- block.settings.buttonLabel -}}
+										</a>
+									</div>
+								{% endif %}
+							</div>
+						</div>
+				{% endcase %}
+			{% endfor %}
+		</div>
+	</vtls-faq>
+</section>
+
+{% schema %}
+{
+	"name": "❤️ FAQ",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "select",
+			"id": "section_background_style",
+			"label": "Section background",
+			"options": [
+				{
+					"value": "color",
+					"label": "Color"
+				},
+				{
+					"value": "gradient",
+					"label": "Gradient"
+				}
+			],
+			"default": "color"
+		},
+		{
+			"type": "color",
+			"id": "generalBackgroundColor",
+			"label": "Background color",
+			"visible_if": "{{ section.settings.section_background_style == 'color' }}"
+		},
+		{
+			"type": "color_background",
+			"id": "section_background_gradient",
+			"label": "Section background gradient",
+			"default": "linear-gradient(to right, #fed951, #ff46c7)",
+			"visible_if": "{{ section.settings.section_background_style == 'gradient' }}"
+		},
+		{
+			"type": "checkbox",
+			"id": "section_background_animation",
+			"label": "Add gradient animation",
+			"default": false,
+			"visible_if": "{{ section.settings.section_background_style == 'gradient' }}"
+		},
+		{
+			"type": "range",
+			"id": "questionSpacing",
+			"label": "Space between questions",
+			"min": 0,
+			"max": 50,
+			"step": 2,
+			"default": 12,
+			"unit": "px"
+		},
+		{
+			"type": "checkbox",
+			"id": "showLineSeparator",
+			"default": true,
+			"label": "Show border"
+		},
+		{
+			"type": "header",
+			"content": "Heading"
+		},
+		{
+			"type": "color",
+			"id": "headingTextColor",
+			"label": "Text color",
+			"default": "#222222"
+		},
+		{
+			"type": "select",
+			"id": "headingAlignment",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "center",
+					"label": "Center"
+				},
+				{
+					"value": "right",
+					"label": "Right"
+				}
+			],
+			"default": "center",
+			"label": "Alignment"
+		},
+		{
+			"type": "select",
+			"id": "headingTextSize",
+			"options": [
+				{
+					"label": "Extra Small",
+					"value": "24"
+				},
+				{
+					"label": "Small",
+					"value": "32"
+				},
+				{
+					"label": "Medium",
+					"value": "40"
+				},
+				{
+					"label": "Large",
+					"value": "48"
+				},
+				{
+					"label": "Extra Large",
+					"value": "52"
+				},
+				{
+					"label": "Extra Extra Large",
+					"value": "64"
+				}
+			],
+			"default": "24",
+			"label": "Text size"
+		},
+		{
+			"type": "header",
+			"content": "Questions design"
+		},
+		{
+			"type": "color",
+			"id": "questionTextColor",
+			"label": "Text color",
+			"default": "#222222"
+		},
+		{
+			"type": "color",
+			"id": "questionBackgroundColor",
+			"label": "Background color"
+		},
+		{
+			"type": "select",
+			"id": "questionTextSize",
+			"options": [
+				{
+					"label": "Small",
+					"value": "14"
+				},
+				{
+					"label": "Medium",
+					"value": "16"
+				},
+				{
+					"label": "Large",
+					"value": "18"
+				}
+			],
+			"default": "16",
+			"label": "Text size"
+		},
+		{
+			"type": "header",
+			"content": "Answers design"
+		},
+		{
+			"type": "color",
+			"id": "answerTextColor",
+			"label": "Text color",
+			"default": "#222222"
+		},
+		{
+			"type": "color",
+			"id": "answerBackgroundColor",
+			"label": "Background color"
+		},
+		{
+			"type": "select",
+			"id": "answerTextSize",
+			"options": [
+				{
+					"label": "Small",
+					"value": "14"
+				},
+				{
+					"label": "Medium",
+					"value": "16"
+				},
+				{
+					"label": "Large",
+					"value": "18"
+				}
+			],
+			"default": "16",
+			"label": "Text size"
+		}
+	],
+	"blocks": [
+		{
+			"type": "heading",
+			"name": "Heading",
+			"settings": [
+				{
+					"type": "inline_richtext",
+					"id": "title",
+					"label": "Heading",
+					"default": "Heading"
+				}
+			]
+		},
+		{
+			"type": "question",
+			"name": "Question block",
+			"settings": [
+				{
+					"type": "inline_richtext",
+					"id": "question",
+					"label": "Question",
+					"default": "Type your question here?"
+				},
+				{
+					"type": "richtext",
+					"id": "answer",
+					"label": "Answer",
+					"default": "<p>Type your answer here. Provide detailed information or instructions related to the question. Be sure to guide users and highlight any important details they need to know.</p>"
+				},
+				{
+					"type": "checkbox",
+					"id": "buttonCheckbox",
+					"label": "Show button",
+					"default": false
+				},
+				{
+					"type": "text",
+					"id": "buttonLabel",
+					"label": "Button label",
+					"default": "See more"
+				},
+				{
+					"type": "text",
+					"id": "buttonLink",
+					"label": "Button link"
+				},
+				{
+					"type": "select",
+					"id": "buttonStyle",
+					"options": [
+						{
+							"label": "Filled",
+							"value": "filled"
+						},
+						{
+							"label": "Outline",
+							"value": "outline"
+						}
+					],
+					"default": "filled",
+					"label": "Button style"
+				},
+				{
+					"type": "color",
+					"id": "buttonTextColor",
+					"label": "Text color",
+					"default": "#ffffff",
+					"info": "Applicable only for filled button"
+				},
+				{
+					"type": "color",
+					"id": "buttonColor",
+					"label": "Button color",
+					"default": "#222222"
+				},
+				{
+					"type": "select",
+					"id": "buttonSize",
+					"options": [
+						{
+							"label": "Small",
+							"value": "small"
+						},
+						{
+							"label": "Medium",
+							"value": "medium"
+						},
+						{
+							"label": "Large",
+							"value": "large"
+						}
+					],
+					"default": "medium",
+					"label": "Button size"
+				},
+				{
+					"type": "range",
+					"id": "buttonCornerRadius",
+					"label": "Corner radius",
+					"min": 0,
+					"max": 40,
+					"step": 2,
+					"default": 4,
+					"unit": "px"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "❤️ Square: Frequently Asked Questions (FAQ)",
+			"category": "Square sections",
+			"blocks": [
+				{
+					"type": "heading",
+					"settings": {
+						"title": "Frequently Asked Questions"
+					}
+				},
+				{
+					"type": "question",
+					"settings": {
+						"question": "What are your shipping options?",
+						"answer": "<p>You can choose your preferred shipping option during the checkout process. We offer various shipping options to cater to your needs. For specific shipping requirements, kindly contact our customer support team.</p>"
+					}
+				},
+				{
+					"type": "question",
+					"settings": {
+						"question": "How can I pay for my order?",
+						"answer": "<p>We accept various payment methods, including credit/debit cards, PayPal, and other secure online payment gateways. You can choose your preferred payment option during the checkout process.</p>"
+					}
+				},
+				{
+					"type": "question",
+					"settings": {
+						"question": "Can I return the products?",
+						"answer": "<p>We offer a hassle-free return policy within 30 days from the date of delivery. If you are unsatisfied with your purchase, you can initiate a return or exchange following the guidelines outlined on our Returns page.</p>"
+					}
+				},
+				{
+					"type": "question",
+					"settings": {
+						"question": "How can I contact Customer support?",
+						"answer": "<p>You can easily contact our customer support team by visiting our Contact page. Our dedicated customer support team is available to assist you with any questions or concerns.</p>"
+					}
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+{% style %}
+	.Vtls-{{ section.id | handle }} {
+		--generalBackgroundColor: {{ section.settings.generalBackgroundColor }};
+		--section-background-gradient: {{ section.settings.section_background_gradient }};
+		--headingTextColor: {{ section.settings.headingTextColor}};
+		--headingTextSize: {{ section.settings.headingTextSize}}px;
+		--headingAlignment: {{ section.settings.headingAlignment}};
+		--questionTextColor: {{ section.settings.questionTextColor }};
+		--questionBackgroundColor: {{ section.settings.questionBackgroundColor }};
+		--questionTextSize: {{ section.settings.questionTextSize }}px;
+		--questionSpacing: {{ section.settings.questionSpacing }}px;
+		--answerTextColor: {{ section.settings.answerTextColor }};
+		--answerBackgroundColor: {{ section.settings.answerBackgroundColor }};
+		--answerTextSize: {{ section.settings.answerTextSize }}px;
+	}
+
+	
+
+.Vtls-{{ section.id | handle }}{min-width:100%}.Vtls-{{ section.id | handle }}--hasBackground{background-color:var(--generalBackgroundColor)}.Vtls-{{ section.id | handle }}--hasGradient{background:var(--section-background-gradient)}.Vtls-{{ section.id | handle }}--hasAnimation{background-size:300% 300%;background-position:0% 50%;animation:gradient-flow 10s ease-in-out infinite}.Vtls-{{ section.id | handle }} .VtlsContainer{padding:var(--vtl-space-48) var(--vtl-space-32);max-width:786px;margin:0 auto}@media(max-width: 991px){.Vtls-{{ section.id | handle }} .VtlsContainer{padding:var(--vtl-space-48) var(--vtl-space-24)}}@media(max-width: 479px){.Vtls-{{ section.id | handle }} .VtlsContainer{padding:var(--vtl-space-48) var(--vtl-space-16)}}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsHeading{text-align:var(--headingAlignment);font-size:var(--headingTextSize);color:var(--headingTextColor);margin:0 0 var(--vtl-space-40) 0}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsHeading a{color:var(--block-description-color);margin:0;padding:0;text-decoration:underline;text-underline-offset:var(--vtl-space-2);transition:opacity .3s ease-in}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsHeading a:hover{opacity:.85}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsHeading:not(:first-of-type){margin-top:var(--vtl-space-48)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem+.VtlsItem{margin-top:var(--questionSpacing)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem--hasDivider{border-bottom:var(--vtl-border-width-1) solid var(--vtl-color-border-default-on-light)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Summary{position:relative;display:block;cursor:pointer;padding:var(--vtl-space-16) var(--vtl-space-40) var(--vtl-space-16) var(--vtl-space-16);font-size:var(--questionTextSize);border-radius:var(--vtl-border-radius-4);line-height:var(--vtl-line-height-140);color:var(--questionTextColor);background-color:var(--questionBackgroundColor);transition:color .1s ease}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Summary a{color:var(--block-description-color);margin:0;padding:0;text-decoration:underline;text-underline-offset:var(--vtl-space-2);transition:opacity .3s ease-in}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Summary a:hover{opacity:.85}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Summary:hover{opacity:.5}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Summary:focus-visible{outline:var(--vtl-border-width-2) solid var(--vtl-color-border-focus-on-light);outline-offset:var(--vtl-space-2)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Summary::after{position:absolute;top:var(--vtl-space-16);right:var(--vtl-space-16);width:var(--vtl-space-16);height:var(--vtl-space-20);content:"";background-color:var(--questionTextColor);mask-image:url("data:image/svg+xml;utf8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22%23currentColor%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M8.48482%201.95453V1.45453H7.48049V1.95453V7.45453H1.95668H1.45451V8.45453H1.95668H7.48049V13.9545V14.4545H8.48482V13.9545V8.45453H14.0086H14.5108V7.45453H14.0086H8.48482V1.95453Z%22%20fill%3D%22%23222222%22%2F%3E%3C%2Fsvg%3E");mask-repeat:no-repeat;mask-size:contain}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer{height:0;opacity:0;overflow:hidden;visibility:hidden;padding:0;font-size:var(--answerTextSize);border-radius:0 0 var(--vtl-border-radius-4) var(--vtl-border-radius-4);color:var(--answerTextColor);background-color:var(--answerBackgroundColor);transition:opacity .3s ease;display:flex;flex-direction:column;row-gap:var(--vtl-space-12)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer a{color:var(--block-description-color);margin:0;padding:0;text-decoration:underline;text-underline-offset:var(--vtl-space-2);transition:opacity .3s ease-in}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer a:hover{opacity:.85}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer .VtlsButton{display:inline-flex}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer .VtlsButton__Link{text-decoration:var(--vtl-text-decoration-none)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer .VtlsButton__Link:hover{opacity:.8}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer .VtlsButton__Link--small{font-size:var(--vtl-font-size-12);line-height:16.8px;padding:var(--vtl-space-6) var(--vtl-space-8)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer .VtlsButton__Link--medium{font-size:var(--vtl-font-size-14);line-height:var(--vtl-line-height-140);padding:var(--vtl-space-6) var(--vtl-space-12)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Answer .VtlsButton__Link--large{font-size:var(--vtl-font-size-16);line-height:var(--vtl-line-height-140);padding:var(--vtl-space-8) var(--vtl-space-16)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Toggle:checked~.VtlsItem__Summary{border-radius:var(--vtl-border-radius-4) var(--vtl-border-radius-4) 0 0}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Toggle:checked~.VtlsItem__Summary::after{mask-image:url("data:image/svg+xml;utf8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M14.5108%208.51514H14.0086H1.95668H1.45451V7.51514H1.95668H14.0086H14.5108V8.51514Z%22%20fill%3D%22%23222222%22%2F%3E%3C%2Fsvg%3E")}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem__Toggle:checked~.VtlsItem__Answer{height:auto;opacity:1;overflow:unset;visibility:visible;padding:var(--vtl-space-16) var(--vtl-space-16) var(--vtl-space-20) var(--vtl-space-16)}.Vtls-{{ section.id | handle }} .VtlsContainer .VtlsItem *:first-child{margin:0}@keyframes gradient-flow{0%{background-position:0% 50%}25%{background-position:50% 100%}50%{background-position:100% 50%}75%{background-position:50% 0%}100%{background-position:0% 50%}}
+
+{% endstyle %}
+
+<script>
+	(() => {
+		class VtlsFaq extends HTMLElement {
+			constructor() {
+				super();
+				this.items = [];
+				this.summaries = [];
+				this.toggles = [];
+				this.onSummaryKeyDown = this.onSummaryKeyDown.bind(this);
+				this.onToggleChange = this.onToggleChange.bind(this);
+			}
+
+			connectedCallback() {
+				this.items = Array.from(this.querySelectorAll('.VtlsItem'));
+				this.summaries = Array.from(this.querySelectorAll('.VtlsItem__Summary'));
+				this.toggles = Array.from(this.querySelectorAll('.VtlsItem__Toggle'));
+
+				this.toggles.forEach((toggle, index) => {
+					this.sync(index);
+					toggle.addEventListener('change', this.onToggleChange);
+				});
+
+				this.summaries.forEach((summary) => {
+					summary.addEventListener('keydown', this.onSummaryKeyDown);
+				});
+			}
+
+			disconnectedCallback() {
+				this.summaries.forEach((summary) => {
+					summary.removeEventListener('keydown', this.onSummaryKeyDown);
+				});
+				this.toggles.forEach((toggle) => {
+					toggle.removeEventListener('change', this.onToggleChange);
+				});
+			}
+
+			sync(index) {
+				const toggle = this.toggles[index];
+				const summary = this.summaries[index];
+				if (!toggle || !summary) return;
+				const panelId = summary.getAttribute('aria-controls');
+				const panel = panelId ? this.querySelector(`#${panelId}`) : null;
+				if (panel) {
+					summary.setAttribute('aria-expanded', toggle.checked ? 'true' : 'false');
+					panel.setAttribute('aria-hidden', toggle.checked ? 'false' : 'true');
+				}
+			}
+
+			onToggleChange(event) {
+				const index = this.toggles.indexOf(event.currentTarget);
+				if (index > -1) this.sync(index);
+			}
+
+			onSummaryKeyDown(event) {
+				const key = event.key;
+				const currentIndex = this.summaries.indexOf(event.currentTarget);
+				if (currentIndex === -1) return;
+
+				if (key === 'Enter' || key === ' ') {
+					event.preventDefault();
+					const t = this.toggles[currentIndex];
+					if (t) {
+						t.checked = !t.checked;
+						t.dispatchEvent(new Event('change'));
+					}
+				}
+
+				if (key === 'Escape') {
+					const t = this.toggles[currentIndex];
+					if (t && t.checked) {
+						t.checked = false;
+						t.dispatchEvent(new Event('change'));
+					}
+				}
+
+				if (key === 'ArrowDown') {
+					event.preventDefault();
+					const next = this.summaries[currentIndex + 1] || this.summaries[0];
+					next?.focus();
+				}
+				if (key === 'ArrowUp') {
+					event.preventDefault();
+					const prev = this.summaries[currentIndex - 1] || this.summaries[this.summaries.length - 1];
+					prev?.focus();
+				}
+				if (key === 'Home') {
+					event.preventDefault();
+					this.summaries[0]?.focus();
+				}
+				if (key === 'End') {
+					event.preventDefault();
+					this.summaries[this.summaries.length - 1]?.focus();
+				}
+			}
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			if (!customElements.get('vtls-faq')) {
+				customElements.define('vtls-faq', VtlsFaq);
+			}
+		});
+	})();
+</script>
+
+<script>
+	(function () {
+		const uninstallMessage = 'Displaying this section requires an active Square: Theme Sections & AI Pages subscription. Reinstall the <a href="https://apps.shopify.com/theme-sections-ai-page-builder" target="_blank">Square: Theme Sections & AI Pages app</a> to activate it or consider removing the section.';
+		const downgradeMessage = 'You downgraded to a free plan. You need to upgrade your <a href="https://apps.shopify.com/theme-sections-ai-page-builder" target="_blank">Square: Theme Sections & AI Pages app</a> plan to activate it or consider removing the section.';
+		const projectId = '5';
+		const sectionsSelector = '.shopify-section';
+		const apps = {
+			'1': {
+				prefix: 'vitals',
+				hostname: 'https://appsolve.io'
+			},
+			'5': {
+				prefix: 'tsapb',
+				hostname: 'https://theme-sections.sqa-api.com'
+			}
+		};
+
+		const cacheKeysMetaFields = '{{ shop.metafields.vitals.tsck }}';
+		const shopId = '{{ shop.id }}';
+
+		const getHostname = () => {
+			if (apps[projectId].hostname) {
+				return apps[projectId].hostname;
+			}
+
+			console.error(`hostname for appId ${projectId} cannot be determined.`);
+			return undefined;
+		}
+
+		const disableSection = (message, selector) => {
+			const mainContainer = document.querySelector(selector);
+			const contentContainer = document.querySelector(`${selector} > section`);
+
+			if ('{{ request.design_mode }}' === 'true') {
+				contentContainer.innerHTML = `<h2 class="VtlsUninstallBG"><div class="VtlsUninstallBG__Text">${message}</div></h2>`;
+			} else {
+				mainContainer.style.display = 'none';
+				mainContainer.remove();
+			}
+		};
+
+		const getThemeSectionIdsByUUID = (installedThemeSections, uuid, appId) => {
+			const listIds = [];
+
+			installedThemeSections.forEach((installedThemeSection) => {
+				if (installedThemeSection.id.includes(`${apps[appId].prefix}_${uuid}`)) {
+					listIds.push(installedThemeSection.id);
+				}
+			})
+
+			return listIds;
+		}
+
+		const getThemeSectionsStatusList = (url) => fetch(url, {
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json' },
+		}).then((response) => response.json());
+
+		const evaluateThemeSections = (url) => {
+			getThemeSectionsStatusList(url).then(response => {
+				const { data, f, i } = response;
+				const installedThemeSections = document.querySelectorAll(sectionsSelector);
+
+				data.forEach((themeSection) => {
+					const { e, u, a } = themeSection;
+
+					if (!e) {
+						const themeSectionsWithUUID = getThemeSectionIdsByUUID(installedThemeSections, u, a);
+						let message = '';
+
+						if (f) {
+							message = downgradeMessage;
+						}
+
+						if (!i) {
+							message = uninstallMessage;
+						}
+
+						themeSectionsWithUUID.forEach((themeSectionSelector) => {
+							disableSection(message, `#${themeSectionSelector}`);
+						})
+					}
+				});
+			})
+		}
+
+		if (shopId) {
+			if (window.vtlsSecurityCheckStarted === undefined) {
+				window.vtlsSecurityCheckStarted = true;
+
+				let url = '';
+				const hostname = getHostname();
+
+				if (!hostname) {
+					return;
+				}
+
+				const baseUrl = `${hostname}/bundle/api/v2/sf/ts`;
+
+				if (cacheKeysMetaFields) {
+					url = `${baseUrl}/${shopId}/${cacheKeysMetaFields}.json`;
+				} else {
+					const timestamp = Math.round(new Date().getTime() / 1000 / 10000) * 10000;
+					url = `${baseUrl}/${shopId}/${timestamp}.json`;
+				}
+
+				evaluateThemeSections(url);
+			}
+		}
+	})();
+</script>
+
+{% style %}
+	
+
+.VtlsUninstallBG{background-color:var(--vtl-color-bg-fill-inverse-on-light);background-image:url("data:image/avif;base64,iVBORw0KGgoAAAANSUhEUgAABOcAAABkCAQAAABnAJxfAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+gLFQgmAgUXFkMAAARaSURBVHja7daxbSRBEATB8ZzvKw0h1dcIlJS4jl25Azlavffn9/3v++e//+vvCwqFQqFQKBRKSklEUCgUCoVCoVAMOgqFQqFQKJSzSiKCQqFQKBQKhWLQUSgUCoVCoZxVEhEUCoVCoVAoFIOOQqFQKBQK5VOURASFQqFQKBQKZVUSERQKhUKhUCiUVUlEUCgUCoVCoVBWZbtOPoVCoVAoFArlovIKERQKhUKhUCiUVXmFCAqFQqFQKBTKqrxCBIVCoVAoFAplVV4hgkKhUCgUCoUyK4kICoVCoVAoFMqqJCIoFAqFQqFQKKuSiKBQKBQKhUKhrEoigkKhUCgUCoVi0FEoFAqFQqGcVRIRFAqFQqFQKBSDjkKhUCgUCuWskoigUCgUCoVCoRh0FAqFQqFQKGeVRASFQqFQKBQKxaCjUCgUCoVCOaskIigUCoVCoVAoBh2FQqFQKBTKWSURQaFQKBQKhUIx6CgUCoVCoVDOKokICoVCoVAoFIpBR6FQKBQKhXJWSURQKBQKhUKhUAw6CoVCoVAolLNKIoJCoVAoFAqFYtBRKBQKhUKhnFUSERQKhUKhUCgUg45CoVAoFArlrJKIoFAoFAqFQqEYdBQKhUKhUChnlUQEhUKhUCgUCsWgo1AoFAqFQvkUJRFBoVAoFAqFQlmVRASFQqFQKBQKZVUSERQKhUKhUCiUVdmuk0+hUCgUCoVCuai8QgSFQqFQKBQKZVVeIYJCoVAoFAqFsiqvEEGhUCgUCoVCWZVXiKBQKBQKhUKhzEoigkKhUCgUCoWyKokICoVCoVAoFMqqJCIoFAqFQqFQKKuSiKBQKBQKhUKhGHQUCoVCoVAoZ5VEBIVCoVAoFArFoKNQKBQKhUI5qyQiKBQKhUKhUCgGHYVCoVAoFMpZJRFBoVAoFAqFQjHoKBQKhUKhUM4qiQgKhUKhUCgUikFHoVAoFAqFclZJRFAoFAqFQqFQDDoKhUKhUCiUs0oigkKhUCgUCoVi0FEoFAqFQqGcVRIRFAqFQqFQKBSDjkKhUCgUCuWskoigUCgUCoVCoRh0FAqFQqFQKGeVRASFQqFQKBQKxaCjUCgUCoVCOaskIigUCoVCoVAoBh2FQqFQKBTKWSURQaFQKBQKhUIx6CgUCoVCoVA+RUlEUCgUCoVCoVBWJRFBoVAoFAqFQlmVRASFQqFQKBQKZVW26+RTKBQKhUKhUC4qrxBBoVAoFAqFQlmVV4igUCgUCoVCoazKK0RQKBQKhUKhUFblFSIoFAqFQqFQKLOSiKBQKBQKhUKhrEoigkKhUCgUCoWyKokICoVCoVAoFMqqJCIoFAqFQqFQKAYdhUKhUCgUylklEUGhUCgUCoVCMegoFAqFQqFQziqJCAqFQqFQKBSKQUehUCgUCoVyVklEUCgUCoVCoVAMOgqFQqFQKJSzSiKCQqFQKBQKhWLQUSgUCoVCoZxVEhEUCoVCoVAoFIOOQqFQKBQK5dOVX5nMB52iezhxAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDI0LTExLTIxVDA4OjM4OjAyKzAwOjAw30WrCwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyNC0xMS0yMVQwODozODowMiswMDowMK4YE7cAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjQtMTEtMjFUMDg6Mzg6MDIrMDA6MDD5DTJoAAAAAElFTkSuQmCC");background-position:center;background-size:cover;text-align:center;padding:var(--vtl-space-32);margin:0}.VtlsUninstallBG__Text{color:var(--vtl-color-text-disable-on-light);font-family:Inter,sans-serif;font-size:var(--vtl-font-size-14);font-weight:var(--vtl-font-weight-400);line-height:var(--vtl-line-height-140);padding:var(--vtl-space-16) var(--vtl-space-16) var(--vtl-space-16) var(--vtl-space-40);background-color:var(--vtl-color-bg-fill-inverse-on-light);display:inline-block}.VtlsUninstallBG__Text::before{content:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%3E%0A%09%09%09%3Cpath%20d%3D%22M9.99994%206.75C10.4142%206.75%2010.7499%207.08579%2010.7499%207.5V11C10.7499%2011.4142%2010.4142%2011.75%209.99994%2011.75C9.58573%2011.75%209.24994%2011.4142%209.24994%2011V7.5C9.24994%207.08579%209.58573%206.75%209.99994%206.75Z%22%20fill%3D%22%23B28400%22%2F%3E%0A%09%09%09%3Cpath%20d%3D%22M11%2013.5C11%2014.0523%2010.5523%2014.5%2010%2014.5C9.44772%2014.5%209%2014.0523%209%2013.5C9%2012.9477%209.44772%2012.5%2010%2012.5C10.5523%2012.5%2011%2012.9477%2011%2013.5Z%22%20fill%3D%22%23B28400%22%2F%3E%0A%09%09%09%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10%203.5C8.95471%203.5%208.21616%204.20232%207.84762%204.94672C7.65565%205.33448%206.75984%207.0441%205.84305%208.79353L5.81531%208.84646C4.9229%2010.5493%204.01714%2012.2777%203.80716%2012.702C3.4351%2013.4537%203.32931%2014.4519%203.89953%2015.316C4.46911%2016.1791%205.44222%2016.5%206.36356%2016.5L13.6364%2016.5C14.5577%2016.5%2015.5308%2016.1791%2016.1004%2015.316C16.6707%2014.4519%2016.5649%2013.4537%2016.1928%2012.702C15.9832%2012.2784%2015.08%2010.555%2014.1889%208.85476L14.1569%208.79352C13.24%207.044%2012.3443%205.33454%2012.1524%204.94693C11.784%204.20242%2011.0454%203.5%2010%203.5ZM9.1919%205.61225C9.59605%204.79592%2010.4041%204.79592%2010.8081%205.61225C11.0102%206.02061%2011.9201%207.75686%2012.8296%209.49243C13.7383%2011.2262%2014.6466%2012.9594%2014.8485%2013.3673C15.2525%2014.1837%2014.8485%2015%2013.6364%2015L6.36356%2015C5.1515%2015%204.74746%2014.1837%205.1515%2013.3673C5.35376%2012.9587%206.26468%2011.2205%207.1748%209.4838C8.08283%207.75111%208.99005%206.01994%209.1919%205.61225Z%22%20fill%3D%22%23B28400%22%2F%3E%0A%09%09%3C%2Fsvg%3E");position:absolute;width:var(--vtl-space-20);height:var(--vtl-space-20);margin-left:calc(-1*var(--vtl-space-24))}.VtlsUninstallBG__Text a{color:var(--vtl-color-text-disable-on-light)}.VtlsUninstallBG__Text a:hover{text-decoration:none}
+
+{% endstyle %}
+

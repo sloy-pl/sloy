@@ -1,0 +1,391 @@
+{% doc %}
+  @prompt
+    Wygeneruj dwa kwadratowe bloki, które będą miały jednolity kolor i na których będę mógł umieścić tekst, Zmniejsz je i dodaj na nich buttony, Niech okna będą szerokie zgodnie z szerokością innych elementów strony, ale niższe, nie tak duże jak teraz., Wyrównaj nagłówek i treści w oknach do lewej strony
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-text-tiles-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  .ai-text-tiles-container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: {{ block.settings.gap }}px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 {{ block.settings.horizontal_padding }}px;
+  }
+
+  .ai-text-tile-{{ ai_gen_id }} {
+    min-height: {{ block.settings.tile_height }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: {{ block.settings.padding }}px;
+    text-align: left;
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-text-tile-{{ ai_gen_id }}--1 {
+    background-color: {{ block.settings.tile_1_bg_color }};
+  }
+
+  .ai-text-tile-{{ ai_gen_id }}--2 {
+    background-color: {{ block.settings.tile_2_bg_color }};
+  }
+
+  .ai-text-tile-heading-{{ ai_gen_id }} {
+    margin: 0 0 {{ block.settings.heading_spacing }}px;
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-text-tile-text-{{ ai_gen_id }} {
+    margin: 0 0 {{ block.settings.button_spacing }}px;
+    font-size: {{ block.settings.text_size }}px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.5;
+  }
+
+  .ai-text-tile-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 500;
+    margin: 1px;
+  }
+
+  .ai-text-tile-button-{{ ai_gen_id }}:hover {
+  background-color: {{ block.settings.button_hover_bg_color }};
+  color: {{ block.settings.button_text_color }};
+  margin: 0;
+  border: 1px solid white;
+}
+
+  @media screen and (max-width: 749px) {
+    .ai-text-tiles-container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.gap | times: 0.75 }}px;
+      padding: 0 {{ block.settings.horizontal_padding | times: 0.5 }}px;
+    }
+
+    .ai-text-tile-{{ ai_gen_id }} {
+      min-height: {{ block.settings.tile_height | times: 0.8 }}px;
+    }
+
+    .ai-text-tile-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.85 }}px;
+    }
+
+    .ai-text-tile-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size | times: 0.9 }}px;
+    }
+
+    .ai-text-tile-button-{{ ai_gen_id }} {
+      font-size: {{ block.settings.button_font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<ai-text-tiles-{{ ai_gen_id }} class="ai-text-tiles-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-text-tiles-container-{{ ai_gen_id }}">
+    <div class="ai-text-tile-{{ ai_gen_id }} ai-text-tile-{{ ai_gen_id }}--1">
+      {% if block.settings.tile_1_heading != blank %}
+        <h3 class="ai-text-tile-heading-{{ ai_gen_id }}">{{ block.settings.tile_1_heading }}</h3>
+      {% endif %}
+      {% if block.settings.tile_1_text != blank %}
+        <div class="ai-text-tile-text-{{ ai_gen_id }}">{{ block.settings.tile_1_text }}</div>
+      {% endif %}
+      {% if block.settings.tile_1_button_text != blank %}
+        <a href="{{ block.settings.tile_1_button_link }}" class="ai-text-tile-button-{{ ai_gen_id }}">
+          {{ block.settings.tile_1_button_text }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="ai-text-tile-{{ ai_gen_id }} ai-text-tile-{{ ai_gen_id }}--2">
+      {% if block.settings.tile_2_heading != blank %}
+        <h3 class="ai-text-tile-heading-{{ ai_gen_id }}">{{ block.settings.tile_2_heading }}</h3>
+      {% endif %}
+      {% if block.settings.tile_2_text != blank %}
+        <div class="ai-text-tile-text-{{ ai_gen_id }}">{{ block.settings.tile_2_text }}</div>
+      {% endif %}
+      {% if block.settings.tile_2_button_text != blank %}
+        <a href="{{ block.settings.tile_2_button_link }}" class="ai-text-tile-button-{{ ai_gen_id }}">
+          {{ block.settings.tile_2_button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</ai-text-tiles-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AiTextTiles{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('ai-text-tiles-{{ ai_gen_id }}', AiTextTiles{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Text tiles",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Tile 1"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "tile_1_heading",
+      "label": "Heading",
+      "default": "Design"
+    },
+    {
+      "type": "richtext",
+      "id": "tile_1_text",
+      "label": "Text",
+      "default": "<p>Curated vintage pieces from iconic European designers</p>"
+    },
+    {
+      "type": "color",
+      "id": "tile_1_bg_color",
+      "label": "Background color",
+      "default": "#FFB05B"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "tile_1_button_text",
+      "label": "Button text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "tile_1_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Tile 2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "tile_2_heading",
+      "label": "Heading",
+      "default": "Quality"
+    },
+    {
+      "type": "richtext",
+      "id": "tile_2_text",
+      "label": "Text",
+      "default": "<p>Each piece carefully inspected and authenticated</p>"
+    },
+    {
+      "type": "color",
+      "id": "tile_2_bg_color",
+      "label": "Background color",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "tile_2_button_text",
+      "label": "Button text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "tile_2_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "tile_height",
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "label": "Tile height",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between tiles",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading spacing",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Button spacing",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text tiles"
+    }
+  ]
+}
+{% endschema %}

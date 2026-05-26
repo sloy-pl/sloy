@@ -1,0 +1,310 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_with_text_KDDdLP": {
+      "type": "image-with-text",
+      "blocks": {
+        "caption_DjPTWB": {
+          "type": "caption",
+          "settings": {
+            "caption": "",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "text_AmMXtr": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Vintage design that<br/><strong>Seems Like Only Yesterday</strong></h2><p>SLOY is where we gather furniture, lamps, and decor, balancing space age flair and modern forms with mid-century classics.</p><p>We get to know them first, so they can start their next chapter in your home.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_ztfAd4": {
+          "type": "button",
+          "settings": {
+            "button_label": "Explore collection",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "caption_DjPTWB",
+        "text_AmMXtr",
+        "button_ztfAd4"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/lowland-ottoman-front-view.png",
+        "height": "medium",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-1",
+        "color_scheme": "scheme-40824869-deb9-44fd-9f0e-1444363967b0",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collection_list_MAa3Gf": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_dzRAcE": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "furniture"
+          }
+        },
+        "featured_collection_pAH6kn": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "lighting"
+          }
+        },
+        "featured_collection_fMmngL": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "objects"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_dzRAcE",
+        "featured_collection_pAH6kn",
+        "featured_collection_fMmngL"
+      ],
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "Discover our range of vintage items",
+        "heading_size": "h2",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "multicolumn_pjkDgN": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_jmWJNi": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>COLLECTION</strong>",
+            "text": "<p>Design icons and unique pieces – not just the big brand names.</p>",
+            "link_label": "",
+            "link": "#"
+          }
+        },
+        "column_BCYgJJ": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>DETAILS</strong>",
+            "text": "<p>Detailed photos and precise descriptions – know what you get.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_P9TpP4": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>CARE</strong>",
+            "text": "<p>Electrical checks and furniture refresh included in price.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_Jj6GFB": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>AVAILABILITY</strong>",
+            "text": "<p>All items are currently in stock – ready for their new home.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_jmWJNi",
+        "column_BCYgJJ",
+        "column_P9TpP4",
+        "column_Jj6GFB"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "SLOY quality standards",
+        "heading_size": "h2",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 4,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "most-recent-products",
+        "products_to_show": 5,
+        "title": "New arrivals",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 5,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 20,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_7bJppW": {
+      "type": "rich-text",
+      "blocks": {
+        "button_gDMPY7": {
+          "type": "button",
+          "settings": {
+            "button_label": "View all",
+            "button_link": "shopify://collections/most-recent-products",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "button_gDMPY7"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 0,
+        "padding_bottom": 52
+      }
+    },
+    "1766345479e084acc5": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_17c5840_BPtdiy": {
+          "type": "ai_gen_block_17c5840",
+          "settings": {
+            "tile_1_heading": "Join the SLOY community",
+            "tile_1_text": "<p>Settle in and feel at home. After all, that’s what it’s all about, isn’t it? Follow us on Instagram for daily inspiration, new arrivals, promos and behind-the-scenes stories.</p>",
+            "tile_1_bg_color": "#e87e91",
+            "tile_1_button_text": "We're here!",
+            "tile_1_button_link": "https://www.instagram.com/sloy_pl/",
+            "tile_2_heading": "Ethical and socially sensitive business",
+            "tile_2_text": "<p>SLOY grew from a love of bold design and from people finding their creative space. We support DEI initiatives and local pets in need. We get involved because we want to.</p>",
+            "tile_2_bg_color": "#9592e7",
+            "tile_2_button_text": "Meet SLOY",
+            "tile_2_button_link": "shopify://pages/about-us",
+            "tile_height": 300,
+            "horizontal_padding": 50,
+            "gap": 16,
+            "text_color": "#ffffff",
+            "heading_size": 24,
+            "text_size": 16,
+            "heading_spacing": 12,
+            "button_spacing": 16,
+            "padding": 36,
+            "border_radius": 0,
+            "button_bg_color": "#ffffff",
+            "button_hover_bg_color": "#ffffff",
+            "button_text_color": "#1a1a1a",
+            "button_font_size": 14,
+            "button_padding_vertical": 12,
+            "button_padding_horizontal": 24,
+            "button_border_radius": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_17c5840_BPtdiy"
+      ],
+      "settings": {}
+    },
+    "rich_text_FKq4aN": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GDHtxY": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GDHtxY"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "contact_form_7chPWV": {
+      "type": "contact-form",
+      "name": "t:sections.contact-form.presets.name",
+      "settings": {
+        "heading": "Want to see a piece in person, ask a question or talk about a project?",
+        "heading_size": "h2",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "image_with_text_KDDdLP",
+    "collection_list_MAa3Gf",
+    "multicolumn_pjkDgN",
+    "featured_collection",
+    "rich_text_7bJppW",
+    "1766345479e084acc5",
+    "rich_text_FKq4aN",
+    "contact_form_7chPWV"
+  ]
+}

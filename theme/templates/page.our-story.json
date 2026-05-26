@@ -1,0 +1,283 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "image_with_text_FzDncw": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_G4k8Hx": {
+          "type": "heading",
+          "settings": {
+            "heading": "Seems Like Only Yesterday",
+            "heading_size": "h2"
+          }
+        },
+        "text_qR7ghV": {
+          "type": "text",
+          "settings": {
+            "text": "<p>SLOY was born in 2025 from a desire to interact with beautiful design, to carve out a creative space for myself, and to fulfill a dream of becoming a small part of someone else's story.</p><p>But this work is also deeply personal, it’s therapeutic. It allows me to tame the past and maintain a connection with those who are no longer in my life.</p><p>I'm a small-town guy living his big dream.</p><p><strong>Olgierd Cichoń</strong></p>",
+            "text_style": "body"
+          }
+        },
+        "button_XEn9D9": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_G4k8Hx",
+        "text_qR7ghV",
+        "button_XEn9D9"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/sloy-casa-sperimentale-fregene.jpg",
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "text_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "pdf_with_text_39AYyj": {
+      "type": "pdf-with-text",
+      "blocks": {
+        "heading_CrYkeq": {
+          "type": "heading",
+          "settings": {
+            "heading": "Hand-picked and heart-restored",
+            "heading_size": "h2"
+          }
+        },
+        "text_DJH3h7": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Seems Like Only Yesterday is about a love for original forms, bold colors, and designs that demand attention. These objects are time capsules waiting to be opened again.</p><p>Every item at SLOY gets a new lease on life. Lamps undergo comprehensive electrical safety checks, and furniture is cleaned. We preserve the unique character that tells the item's history.</p><p>Explore our debut 2025 catalog featuring our curated archive of sold treasures, then visit the shop to discover our latest arrivals.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_mVEyEY": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop now",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_CrYkeq",
+        "text_DJH3h7",
+        "button_mVEyEY"
+      ],
+      "name": "Flipbook with text",
+      "settings": {
+        "flipbook_url": "https://online.fliphtml5.com/SLOYPL/SLOY-2025/",
+        "flipbook_height": 600,
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "image_first",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_with_text_DFxXCW": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_V43ib7": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Let's create art together</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Lb4aLP": {
+          "type": "text",
+          "settings": {
+            "text": "<p>We’re opening our doors to creators, putting unique forms in their hands and championing their artistic vision.</p><p>We want to create one-of-a-kind pieces that spark a dialogue between design history and contemporary forms.</p><p>For our first collaboration of 2025, we invited Kasia Sobala, an artist who reimagines furniture through the art of tufting. She breathed new, colorful life into a classic Labofa chair.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_RCtUBV": {
+          "type": "button",
+          "settings": {
+            "button_label": "SLOY × Kasia Sobala",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_V43ib7",
+        "text_Lb4aLP",
+        "button_RCtUBV"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/P1010031-Photoroom-Photoroom-Photoroom-Photoroom.png",
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "text_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_6iH96F": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_4bJbPK": {
+          "type": "column",
+          "settings": {
+            "title": "Ethical and socially sensitive business",
+            "text": "<p>Our passion for design goes hand in hand with our commitment to others. At SLOY, we proudly support DEI initiatives, the Great Orchestra of Christmas Charity (WOŚP), and animals in need.</p><p>We get involved and give back – not because we have to, but because we want to.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_CUH9T8": {
+          "type": "column",
+          "settings": {
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_U9yK3G": {
+          "type": "column",
+          "settings": {
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_4bJbPK",
+        "column_CUH9T8",
+        "column_U9yK3G"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "What we believe in?",
+        "heading_size": "h2",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 1,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_P3E7X9": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_EDPFEU": {
+          "type": "column",
+          "settings": {
+            "title": "Naming",
+            "text": "<p>SLOY stands for Seems Like Only Yesterday. The name embodies our vision and values, reflecting our deep connection to the past. Each of us nurtures memories that stop time itself, reminding us that even decades later, it still Seems Like Only Yesterday…</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_JLHh3q": {
+          "type": "column",
+          "settings": {
+            "title": "Key visual",
+            "text": "<p>Our visual identity honors the bold forms and colors of 70s and 80s design. The logo’s distinctive \"Ø\" serves a dual purpose: a nod to Scandinavian aesthetics and the technical symbol for diameter. This captures our essence, where artistic heritage meets precision.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_EDPFEU",
+        "column_JLHh3q"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Our DNA",
+        "heading_size": "h2",
+        "image_width": "third",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "contact_form_HLzMW8": {
+      "type": "contact-form",
+      "name": "t:sections.contact-form.presets.name",
+      "settings": {
+        "heading": "Curious about us? Reach out!",
+        "heading_size": "h2",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_FzDncw",
+    "pdf_with_text_39AYyj",
+    "image_with_text_DFxXCW",
+    "multicolumn_6iH96F",
+    "multicolumn_P3E7X9",
+    "contact_form_HLzMW8"
+  ]
+}

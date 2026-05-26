@@ -1,0 +1,221 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "176884977143f84566": {
+      "type": "apps",
+      "blocks": {
+        "simple_breadcrumb_breadcrumb_pQwBbE": {
+          "type": "shopify://apps/simple-breadcrumb/blocks/breadcrumb/72abe039-63af-4862-822d-d042976a1a4f",
+          "settings": {
+            "color_scheme": "accent-1",
+            "seperator": "gt",
+            "custom_seperator": "",
+            "home_label": "Home",
+            "products_label": "Products",
+            "products_url": "https://sloy.pl/collections/all",
+            "padding": 16,
+            "font_size": 90,
+            "align_center": false,
+            "uppercase": false,
+            "disable_wrap": false,
+            "page_width": true
+          }
+        }
+      },
+      "block_order": [
+        "simple_breadcrumb_breadcrumb_pQwBbE"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "custom_liquid_UfijWV": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<a href=\"/pages/contact-us?product={{ product.title }}\",\" class=\"button button-primary\">{{ 'custom_liquid_UfijWV.text' | t }}</a>"
+          }
+        },
+        "seowill_trust_badges_star_rating_WXVz4H": {
+          "type": "shopify://apps/seowill-trust-badges/blocks/star_rating/f42f2346-5d14-4b41-a8b9-4b6ee352262e",
+          "settings": {
+            "badge_id": "{{ product.metafields.custom.seowill_badge_id.value }}"
+          }
+        },
+        "description_QPAWhG": {
+          "type": "description",
+          "settings": {}
+        },
+        "sku_hgYbJb": {
+          "type": "sku",
+          "settings": {
+            "text_style": "body"
+          }
+        },
+        "collapsible_tab_tMyegG": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Key features",
+            "icon": "check_mark",
+            "content": "{{ product.metafields.custom.key_features | metafield_tag }}",
+            "page": ""
+          }
+        },
+        "collapsible_tab_8qAJf8": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Condition",
+            "icon": "question_mark",
+            "content": "<p>{{ product.metafields.custom.condition | metafield_tag }}</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_khzdxp": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Dimensions",
+            "icon": "ruler",
+            "content": "{{ product.metafields.custom.dimensions | metafield_tag }}",
+            "page": ""
+          }
+        },
+        "collapsible_tab_88ALb3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Perfect for",
+            "icon": "silhouette",
+            "content": "{{ product.metafields.custom.perfect_for | metafield_tag }}",
+            "page": ""
+          }
+        },
+        "collapsible_tab_xamaFi": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & pickup",
+            "icon": "box",
+            "content": "{{ product.metafields.custom.shipping_pickup | metafield_tag }}",
+            "page": ""
+          }
+        },
+        "collapsible_tab_zAT6q7": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "SLOY quality standard",
+            "icon": "star",
+            "content": "<p>{{ product.metafields.custom.sloy_quality_standard.value }}</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_FQCjc3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Designer",
+            "icon": "heart",
+            "content": "<p>{{ product.metafields.custom.designer.value }}</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_jMRWUU": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Manufacturer",
+            "icon": "price_tag",
+            "content": "<p>{{ product.metafields.custom.manufacturer.value }}</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_qhr7jF": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More information",
+            "icon": "chat_bubble",
+            "content": "<p>{{ product.metafields.custom.additional_information.value }}</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "custom_liquid_UfijWV",
+        "seowill_trust_badges_star_rating_WXVz4H",
+        "description_QPAWhG",
+        "sku_hgYbJb",
+        "collapsible_tab_tMyegG",
+        "collapsible_tab_8qAJf8",
+        "collapsible_tab_khzdxp",
+        "collapsible_tab_88ALb3",
+        "collapsible_tab_xamaFi",
+        "collapsible_tab_zAT6q7",
+        "collapsible_tab_FQCjc3",
+        "collapsible_tab_jMRWUU",
+        "collapsible_tab_qhr7jF"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "small",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail",
+        "mobile_thumbnails": "show",
+        "media_position": "left",
+        "image_zoom": "none",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    }
+  },
+  "order": [
+    "176884977143f84566",
+    "main",
+    "related-products"
+  ]
+}

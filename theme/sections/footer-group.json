@@ -1,0 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "text_8CRyKH": {
+          "type": "text",
+          "settings": {
+            "heading": "Optiwriting Sp. z o. o.",
+            "subtext": "<p>Registered office address:<br/>ul. Zygmunta Augusta 5/2,<br/>31-504 Kraków, Poland</p><p>KRS: 0001055905<br/>NIP: 6751787340<br/>REGON: 526268913</p>"
+          }
+        },
+        "text_kLjbWB": {
+          "type": "text",
+          "settings": {
+            "heading": "Contact",
+            "subtext": "<p>E-mail: <a href=\"mailto:hello@sloy.pl\">hello@sloy.pl</a><br/>Phone: +48 690 640 002</p><p>Warehouse address:<br/>ul. Przewóz 34 (entrance from ul. Myśliwska),<br/>30-716 Kraków, Poland</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_8CRyKH",
+        "text_kLjbWB"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "newsletter_enable": false,
+        "newsletter_heading": "",
+        "enable_follow_on_shop": true,
+        "show_social": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "payment_enable": false,
+        "show_policy": true,
+        "margin_top": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

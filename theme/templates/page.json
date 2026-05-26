@@ -1,0 +1,527 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "collapsible_content_U6Lzmh": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_xbFgf8": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Is the furniture safe and clean?",
+            "icon": "star",
+            "row_content": "<p>Yes. Every piece is cleaned, technically inspected, and ready for use immediately upon delivery.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_Fh9dak": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are the lamps safe?",
+            "icon": "star",
+            "row_content": "<p>Yes, lamps undergo comprehensive electrical inspections. The exception is unused and factory-sealed vintage lighting. In such cases, we unpack and test the lamps only at the customer's express request.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_i7awaL": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How much does furniture cleaning and lamp inspection cost?",
+            "icon": "star",
+            "row_content": "<p>Everything is included in the price of the given product.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_8AtCmb": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do the photos show the specific products?",
+            "icon": "star",
+            "row_content": "<p>Yes, the photos show the exact piece of furniture, decoration, or lamp you will receive.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_tEQHUJ": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What is the technical condition of the products?",
+            "icon": "star",
+            "row_content": "<p>The majority of products are in very good condition, though there are instances with significant signs of use. Every SLOY product is carefully checked and described. You know exactly what you are paying for and what you will receive.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_RDi9zw": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are the items original?",
+            "icon": "star",
+            "row_content": "<p>We strive to fully understand the history of each product. All information, such as manufacturer, model, designer, is included in the descriptions. If a replica is sold, we explicitly inform you about it.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_J9eqdq": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you have all products in stock?",
+            "icon": "star",
+            "row_content": "<p>Yes, we only sell furniture, lamps, and decorations that are physically located in our warehouse in Krakow.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_xbFgf8",
+        "collapsible_row_Fh9dak",
+        "collapsible_row_i7awaL",
+        "collapsible_row_8AtCmb",
+        "collapsible_row_tEQHUJ",
+        "collapsible_row_RDi9zw",
+        "collapsible_row_J9eqdq"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "SLOY quality standards",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collapsible_content_xeLCRm": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_PkJbei": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Where can I buy items from SLOY?",
+            "icon": "chat_bubble",
+            "row_content": "<p>Through the sloy.pl website and the following platforms: Instagram, Facebook, OLX, Vinted, Patyna, Etsy, and Pamono.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_dMDDLP": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Can I view the product before purchasing?",
+            "icon": "chat_bubble",
+            "row_content": "<p>Yes, we are happy to show a specific product by prior appointment. Our store operates in Krakow.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_X44Upp": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "I have a question regarding a product. How can I contact you?",
+            "icon": "chat_bubble",
+            "row_content": "<p>Send a message to <a href=\"mailto:hello@sloy.pl\" target=\"_blank\">hello@sloy.pl</a>.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_QVpwWR": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you have more units of the same product?",
+            "icon": "chat_bubble",
+            "row_content": "<p>Most products are available as single items. If we have more, relevant information will be found in the description.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_ckargq": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Can I order furniture with new upholstery?",
+            "icon": "chat_bubble",
+            "row_content": "<p>Yes, but only if the original upholstery needs replacement. We always try to preserve the original fabric. Contact us to find out if we will be doing this type of restoration in the near future. Custom orders are subject to a contract and a deposit.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_WFwNdP": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "I want to order a specific piece of furniture. How do I do that?",
+            "icon": "chat_bubble",
+            "row_content": "<p>Send us a message including information about the brand, model, designer, color, and other relevant parameters, as well as your budget. Lead times may range from a few weeks to several months. Custom orders are covered by a contract and a deposit. The client also bears additional costs (taxes, customs duties, transport costs to the warehouse in Krakow and to the final delivery location).</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_iehhfC": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Can I make a reservation?",
+            "icon": "chat_bubble",
+            "row_content": "<p>We make reservations only in exceptional situations, for up to 7 calendar days, and after payment of a deposit.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_r83cKK": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How can I return a product?",
+            "icon": "chat_bubble",
+            "row_content": "<p>Purchased products can be returned within 14 calendar days. They must be returned in the identical condition in which they were shipped, and shipping costs are borne by the sender.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_PkJbei",
+        "collapsible_row_dMDDLP",
+        "collapsible_row_X44Upp",
+        "collapsible_row_QVpwWR",
+        "collapsible_row_ckargq",
+        "collapsible_row_WFwNdP",
+        "collapsible_row_iehhfC",
+        "collapsible_row_r83cKK"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "Orders",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collapsible_content_NjA8RY": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_UF9YtM": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What forms of payment do you accept?",
+            "icon": "price_tag",
+            "row_content": "<p><em>(Please fill in your payment methods here if needed)</em></p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_N34M3C": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Is cash on delivery available?",
+            "icon": "price_tag",
+            "row_content": "<p>No, payment must be made at the time of placing the order.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_aKEXNE": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you issue invoices?",
+            "icon": "price_tag",
+            "row_content": "<p>Yes, for every product sold, we issue an invoice margin. In the case of a business purchase, relevant company details must be provided when placing the order.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_q9ckGw": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you offer installment plans?",
+            "icon": "price_tag",
+            "row_content": "<p>No, at this moment SLOY does not offer installment sales.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_3ijk3t": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Can I pay in EUR?",
+            "icon": "price_tag",
+            "row_content": "<p>We accept payments in PLN and EUR. For orders paid in Euro, we add a fee of 20% of the value expressed in PLN.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_UF9YtM",
+        "collapsible_row_N34M3C",
+        "collapsible_row_aKEXNE",
+        "collapsible_row_q9ckGw",
+        "collapsible_row_3ijk3t"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "Payments and billing",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collapsible_content_R9nUqX": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_HpRVzE": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Is personal pickup possible?",
+            "icon": "box",
+            "row_content": "<p>Absolutely. Every order can be picked up in person in Krakow by prior appointment.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_7ifbR8": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How much does shipping cost?",
+            "icon": "box",
+            "row_content": "<p>Shipping cost depends on location, delivery method, type, dimensions, and weight of the given product. We make every effort to ensure it is visible on the product page, but this is not always possible. If you don't see a shipping price, contact us.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_Anihkk": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How fast do you ship products?",
+            "icon": "box",
+            "row_content": "<p>Smaller products are shipped within 3 business days of posting the payment. Larger orders are usually shipped within 7 business days.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_VeNXmd": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are shipments insured?",
+            "icon": "box",
+            "row_content": "<p>Yes, every package sent by SLOY is covered by insurance.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_VBURiy": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you ship orders abroad?",
+            "icon": "box",
+            "row_content": "<p>Yes, SLOY fulfills orders within the European Union.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_9ypnep": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "The goods were damaged during transport. What now?",
+            "icon": "box",
+            "row_content": "<p>Send documentation to <a href=\"mailto:hello@sloy.pl\" target=\"_blank\">hello@sloy.pl </a>within 1 business day, including: a description of the damage, video and photos taken during unpacking of the product, as well as video and photos after unpacking.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_D8iLhh": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you offer free shipping?",
+            "icon": "box",
+            "row_content": "<p>Standard shipping fees apply. However, we do have an exception! Occasionally, when we hit the road across Poland, we offer free delivery along our route. We always announce these special opportunities on our Instagram and Facebook – so it pays to follow us!</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_HpRVzE",
+        "collapsible_row_7ifbR8",
+        "collapsible_row_Anihkk",
+        "collapsible_row_VeNXmd",
+        "collapsible_row_VBURiy",
+        "collapsible_row_9ypnep",
+        "collapsible_row_D8iLhh"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "Shipping",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "scheme-1",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collapsible_content_3yqdE8": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_JicRbE": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Interior architects",
+            "icon": "clipboard",
+            "row_content": "<p>We are happy to establish project-based and long-term collaborations with architects looking for original furniture, lighting, and interior accessories for their clients.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_EHfX68": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Companies",
+            "icon": "clipboard",
+            "row_content": "<p>We fulfill large orders and B2B collaborations with companies, responding to their needs related to furnishing offices, event spaces, training rooms, and conference halls.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_M47jCP": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "HoReCa",
+            "icon": "clipboard",
+            "row_content": "<p>We cooperate with hotels, cafes, and restaurants in the selection of furniture, lamps, and decorations.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_JRHUWL": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Product rentals",
+            "icon": "clipboard",
+            "row_content": "<p>We would love to see items from our store in a movie, commercial, music video, or on the cover of a fashion magazine. The terms of lending a given product are determined individually.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_JicRbE",
+        "collapsible_row_EHfX68",
+        "collapsible_row_M47jCP",
+        "collapsible_row_JRHUWL"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "Business cooperation (B2B)",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collapsible_content_A6GaXc": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_BxdyGf": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Media and industry events",
+            "icon": "silhouette",
+            "row_content": "<p>We tell the SLOY story, provide expert commentary, share knowledge, and are happy to appear on stage.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_fgxQ6x": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Advertising cooperation",
+            "icon": "silhouette",
+            "row_content": "<p>We are open to marketing cooperation with internet creators regarding content creation and organizing contests. We operate on a barter basis, we do not offer financial remuneration. We cooperate exclusively with influencers who share the same values, create content related to the character of our store, and act ethically.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_BxdyGf",
+        "collapsible_row_fgxQ6x"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "Media and ad cooperation",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 60
+      }
+    },
+    "blocks_KUdhLp": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_b397da4_KpUYxn": {
+          "type": "ai_gen_block_b397da4",
+          "settings": {
+            "heading": "Couldn't find the answer? Write to us.",
+            "subtext": "",
+            "success_message": "Thank you for contacting us. We'll get back to you as soon as possible.",
+            "name_label": "",
+            "name_placeholder": "Your name",
+            "email_label": "",
+            "email_placeholder": "Your e-mail address",
+            "phone_label": "",
+            "phone_placeholder": "Subject",
+            "message_label": "Message",
+            "message_placeholder": "Tell us how we can help",
+            "button_label": "Send",
+            "heading_color": "#1a1a1a",
+            "text_color": "#1a1a1a",
+            "input_background": "#ffffff",
+            "button_color": "#ff850c",
+            "button_text_color": "#ffffff",
+            "button_hover_color": "#e67600"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_b397da4_KpUYxn"
+      ],
+      "name": "Contact form",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "collapsible_content_U6Lzmh",
+    "collapsible_content_xeLCRm",
+    "collapsible_content_NjA8RY",
+    "collapsible_content_R9nUqX",
+    "collapsible_content_3yqdE8",
+    "collapsible_content_A6GaXc",
+    "blocks_KUdhLp"
+  ]
+}
