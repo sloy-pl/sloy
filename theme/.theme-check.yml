@@ -1,0 +1,14 @@
+# Theme Check config for the Dawn theme.
+# Run locally / in CI with:  shopify theme check --path theme
+#
+# Extends Shopify's recommended ruleset. Tighten or disable individual checks
+# here as the theme diverges from stock Dawn.
+extends: :theme_app_extension
+root: "."
+
+# Dawn ships translation keys that Theme Check can't always resolve when the
+# locale files are split; relax these rather than chase false positives.
+MissingTemplate:
+  enabled: true
+TranslationKeyExists:
+  enabled: true

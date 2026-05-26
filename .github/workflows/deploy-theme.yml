@@ -1,0 +1,35 @@
+name: Deploy theme
+
+# Pushes theme/ to the live Shopify theme on every push to main that touches
+# the theme. Lints with Theme Check first so a broken theme never deploys.
+#
+# Required repo secrets:
+#   SHOPIFY_CLI_THEME_TOKEN  Theme Access app password (Shopify "Theme Access" app)
+#   SHOPIFY_STORE            store domain, e.g. sloy.myshopify.com
+#   SHOPIFY_THEME_ID         numeric id of the live theme to overwrite
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "theme/**"
+      - ".github/workflows/deploy-theme.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_STORE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli @shopify/theme
+      - name: Theme Check
+        run: shopify theme check --path theme
+      - name: Push to live theme
+        run: shopify theme push --path theme --theme "${{ secrets.SHOPIFY_THEME_ID }}"

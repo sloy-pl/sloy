@@ -1,0 +1,5 @@
+# Files under theme/ that should never be pushed to the live theme.
+# (theme/ is already deploy-scoped via `--path theme`; this is belt-and-suspenders.)
+.gitkeep
+.theme-check.yml
+README.md
