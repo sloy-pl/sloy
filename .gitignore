@@ -3,3 +3,11 @@ test-results/
 playwright-report/
 blob-report/
 /playwright/.cache/
+
+# warehouse import (WooCommerce) — commit scripts only, never company data
+warehouse/.env
+warehouse/images/
+warehouse/data/*
+!warehouse/data/.gitkeep
+warehouse/__pycache__/
+*.pyc

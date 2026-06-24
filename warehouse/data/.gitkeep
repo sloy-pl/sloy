@@ -1,0 +1,3 @@
+# Company data lives here (sales.csv source, derived JSON/CSV, images).
+# Everything in this directory except this file is gitignored on purpose.
+# Place the Airtable export as data/sales.csv before running the scripts.
