@@ -73,8 +73,8 @@ def main():
     products = []
     for row in rows[1:]:
         sku = row[0].strip()
-        if sku not in sku_images:
-            continue  # no confirmed images -> excluded from this batch
+        if not sku:
+            continue  # skip the SKU-less example row
         (
             _sku, title, description, key_features, condition, dimensions,
             perfect_for, shipping_pickup, quality_standard, designer,
@@ -93,7 +93,7 @@ def main():
             "quality_standard": quality_standard,
             "designer": designer,
             "manufacturer": manufacturer,
-            "images": sku_images[sku],
+            "images": sku_images.get(sku, [])[:1],
             "price": prices.get(sku, ""),
         })
 
@@ -106,7 +106,8 @@ def main():
         base["Handle"] = p["handle"]
         base["Title"] = p["title"]
         base["Body (HTML)"] = p["body_html"]
-        base["Published"] = "true" if p["price"] else "false"
+        is_ready = bool(p["price"]) and bool(p["images"])
+        base["Published"] = "true" if is_ready else "false"
         base["Option1 Name"] = "Title"
         base["Option1 Value"] = "Default Title"
         base["Variant SKU"] = p["sku"]
@@ -119,7 +120,7 @@ def main():
         base["Variant Requires Shipping"] = "true"
         base["Variant Taxable"] = "true"
         base["Gift Card"] = "false"
-        base["Status"] = "active" if p["price"] else "draft"
+        base["Status"] = "active" if is_ready else "draft"
         base[METAFIELD_MAP["Key features"]] = p["key_features"]
         base[METAFIELD_MAP["Condition"]] = p["condition"]
         base[METAFIELD_MAP["Dimensions"]] = p["dimensions"]
@@ -129,6 +130,8 @@ def main():
         base[METAFIELD_MAP["Designer"]] = p["designer"]
         base[METAFIELD_MAP["Manufacturer"]] = p["manufacturer"]
 
+        if not p["images"]:
+            out_rows.append(base)
         for i, img in enumerate(p["images"], start=1):
             if i == 1:
                 row = dict(base)
@@ -147,7 +150,8 @@ def main():
     print(f"Wrote {len(out_rows)} rows for {len(products)} products -> {OUT_CSV}")
     for p in products:
         price = p["price"] or "MISSING"
-        print(f"  {p['sku']:10s} {len(p['images']):3d} images  {price:>8s} PLN  {p['title']}")
+        imgs = "no image" if not p["images"] else "1 image "
+        print(f"  {p['sku']:10s} {imgs}  {price:>8s} PLN  {p['title']}")
 
 
 if __name__ == "__main__":
