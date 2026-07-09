@@ -11,3 +11,8 @@ warehouse/data/*
 !warehouse/data/.gitkeep
 warehouse/__pycache__/
 *.pyc
+
+# Google Drive access — never commit the service account key or .env
+gdrive/.env
+gdrive/service-account.json
+gdrive/__pycache__/
