@@ -17,4 +17,3 @@ gdrive/.env
 gdrive/service-account.json
 gdrive/__pycache__/
 gdrive/.venv/
-gdrive/images/
