@@ -17,3 +17,7 @@ gdrive/.env
 gdrive/service-account.json
 gdrive/__pycache__/
 gdrive/.venv/
+
+# Shopify import — never commit the Admin API access token
+shopify-import/.env
+shopify-import/import_results.csv
