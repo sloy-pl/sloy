@@ -32,6 +32,19 @@ through all of them).
 python3 list_products.py
 ```
 
+### `upload_images.py`
+
+Uploads a SKU's photos from the shared Google Drive folder (subfoldered by
+SKU) to its Shopify product, via Shopify's staged-upload flow. Needs the
+Google API client, so run it with the `gdrive/` venv (it reuses
+`../gdrive/.env` for Drive access):
+
+```bash
+source ../gdrive/.venv/bin/activate
+python3 upload_images.py AKC-151 --dry-run   # list images, no upload
+python3 upload_images.py AKC-151             # upload to Shopify
+```
+
 ### `build_csv.py`
 
 Builds a Shopify product-import CSV (`products_import.csv`) for new
