@@ -13,7 +13,7 @@ Usage:
   python3 sheet_to_shopify.py --limit 3     # do only the first 3 (test batch)
   python3 sheet_to_shopify.py                # full run
 """
-import argparse, csv, io, json, os, sys, urllib.request, urllib.error
+import argparse, csv, io, json, os, sys, urllib.request, urllib.error, urllib.parse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SHEET_ID = "1x0J7ufFHrLUdTQ3WahUBdrYH_bl9nkb2yPvzFXpGmZ8"
@@ -31,11 +31,34 @@ def load_env():
         if line and not line.startswith("#") and "=" in line:
             k, v = line.split("=", 1)
             env[k.strip()] = v.strip()
-    for k in ("SHOPIFY_STORE", "SHOPIFY_ACCESS_TOKEN"):
+    for k in ("SHOPIFY_STORE", "SHOPIFY_CLIENT_ID", "SHOPIFY_CLIENT_SECRET"):
         if not env.get(k):
             sys.exit(f"Missing {k} in .env")
     env.setdefault("SHOPIFY_API_VERSION", "2024-10")
     return env
+
+
+def fetch_access_token(env):
+    """Exchange the app's Client ID/Secret for an Admin API access token.
+
+    Only works when the app and the store belong to the same Shopify
+    organization in the Dev Dashboard (client_credentials grant).
+    """
+    url = f"https://{env['SHOPIFY_STORE']}/admin/oauth/access_token"
+    data = urllib.parse.urlencode({
+        "grant_type": "client_credentials",
+        "client_id": env["SHOPIFY_CLIENT_ID"],
+        "client_secret": env["SHOPIFY_CLIENT_SECRET"],
+    }).encode()
+    req = urllib.request.Request(url, data=data, method="POST", headers={
+        "Content-Type": "application/x-www-form-urlencoded",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            body = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        sys.exit(f"Failed to get access token — HTTP {e.code}: {e.read().decode('utf-8', 'replace')}")
+    return body["access_token"]
 
 
 def fetch_rows():
@@ -64,7 +87,7 @@ def body_html(description):
 class Shopify:
     def __init__(self, env):
         self.url = f"https://{env['SHOPIFY_STORE']}/admin/api/{env['SHOPIFY_API_VERSION']}/graphql.json"
-        self.token = env["SHOPIFY_ACCESS_TOKEN"]
+        self.token = fetch_access_token(env)
 
     def gql(self, query, variables=None):
         payload = json.dumps({"query": query, "variables": variables or {}}).encode()
