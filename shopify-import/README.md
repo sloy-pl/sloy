@@ -14,8 +14,13 @@ cp .env.example .env
 ### `sheet_to_shopify.py`
 
 Imports products from the public CSV export of the SLOY Google Sheet
-(SKU, Title, Description). Idempotent by SKU — creates new products as
-drafts, updates existing ones by title/description.
+(SKU, Title, Description, plus the metafield columns: Key features,
+Condition, Dimensions, Perfect for, Shipping & pickup, SLOY quality
+standard, Designer, Manufacturer). Idempotent by SKU — creates new
+products as drafts, updates existing ones by title/description, and sets
+`product.metafields.custom.*` to match the store's existing metafield
+definitions (types: list.single_line_text_field, multi_line_text_field,
+single_line_text_field).
 
 ```bash
 python3 sheet_to_shopify.py --dry-run     # show what would happen, no calls

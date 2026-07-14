@@ -20,6 +20,19 @@ SHEET_ID = "1x0J7ufFHrLUdTQ3WahUBdrYH_bl9nkb2yPvzFXpGmZ8"
 SHEET_GID = "0"
 CSV_URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={SHEET_GID}"
 
+# Sheet column -> (namespace, key, type). Types match the metafield
+# definitions already set up in the store (product.metafields.custom.*).
+METAFIELD_COLUMNS = {
+    "Key features": ("custom", "key_features", "list.single_line_text_field"),
+    "Condition": ("custom", "condition", "multi_line_text_field"),
+    "Dimensions": ("custom", "dimensions", "list.single_line_text_field"),
+    "Perfect for": ("custom", "perfect_for", "list.single_line_text_field"),
+    "Shipping & pickup": ("custom", "shipping_pickup", "list.single_line_text_field"),
+    "SLOY quality standard": ("custom", "sloy_quality_standard", "single_line_text_field"),
+    "Designer": ("custom", "designer", "single_line_text_field"),
+    "Manufacturer": ("custom", "manufacturer", "single_line_text_field"),
+}
+
 
 def load_env():
     env = {}
@@ -74,14 +87,32 @@ def fetch_rows():
         products.append({
             "sku": sku,
             "title": title,
-            "body_html": body_html(row.get("Description") or ""),
+            "body_html": body_html(row.get("Description") or "", row.get("More information") or ""),
+            "metafields": metafields_from_row(row),
         })
     return products
 
 
-def body_html(description):
+def body_html(description, more_info):
     paras = [p.strip() for p in description.split("\n\n") if p.strip()]
-    return "".join(f"<p>{p}</p>" for p in paras)
+    html = "".join(f"<p>{p}</p>" for p in paras)
+    if more_info.strip():
+        html += f"<p>{more_info.strip()}</p>"
+    return html
+
+
+def metafields_from_row(row):
+    metafields = []
+    for column, (namespace, key, mtype) in METAFIELD_COLUMNS.items():
+        raw = (row.get(column) or "").strip()
+        if not raw:
+            continue
+        if mtype.startswith("list."):
+            value = json.dumps([line.strip() for line in raw.split("\n") if line.strip()])
+        else:
+            value = raw
+        metafields.append({"namespace": namespace, "key": key, "type": mtype, "value": value})
+    return metafields
 
 
 class Shopify:
@@ -156,6 +187,22 @@ class Shopify:
         if errors:
             raise RuntimeError(str(errors))
 
+    def set_metafields(self, product_id, metafields):
+        if not metafields:
+            return
+        mutation = """
+        mutation($metafields: [MetafieldsSetInput!]!) {
+          metafieldsSet(metafields: $metafields) {
+            userErrors { field message }
+          }
+        }
+        """
+        inputs = [{"ownerId": product_id, **m} for m in metafields]
+        data = self.gql(mutation, {"metafields": inputs})
+        errors = data["metafieldsSet"]["userErrors"]
+        if errors:
+            raise RuntimeError(str(errors))
+
     def update_product(self, product_id, title, body_html):
         mutation = """
         mutation($input: ProductInput!) {
@@ -184,7 +231,7 @@ def main():
 
     if args.dry_run:
         for p in products:
-            print(f"{p['sku']:>10}  {p['title']}")
+            print(f"{p['sku']:>10}  {p['title']}  metafields={len(p['metafields'])}")
         print(f"\n{len(products)} products would be imported.")
         return
 
@@ -202,6 +249,7 @@ def main():
             else:
                 product_id = shop.create_product(p["title"], p["body_html"], sku)
                 action = "created"
+            shop.set_metafields(product_id, p["metafields"])
             results.append((sku, action, product_id, ""))
             print(f"[{i}/{len(products)}] {sku}: {action} ({product_id})")
         except Exception as e:
