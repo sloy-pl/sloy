@@ -44,6 +44,25 @@ python3 sheet_to_shopify.py --limit 3     # test batch
 python3 sheet_to_shopify.py               # full run
 ```
 
+### `export_translations.py`
+
+Exports an EN→PL corpus of every translated product string in the store —
+product title/body_html/handle/seo, plus product options and option values
+(and any translatable metafields, if metafield definitions have translation
+enabled) — via `translatableResources`. Writes
+`data/translations_pl.json` and `data/translations_pl.csv`
+(`resource_type, resource_id, key, en, pl`).
+
+Needs the same `read_translations` scope gap noted above fixed first (the
+app currently only has product/media scopes); until then every resource
+type is skipped with an `ACCESS_DENIED` message and the output is empty.
+
+```bash
+python3 export_translations.py                # data/translations_pl.{json,csv}
+python3 export_translations.py --locale pl
+python3 export_translations.py --out-prefix data/corpus
+```
+
 ### `list_products.py`
 
 Lists the titles of every product currently in the store (paginates

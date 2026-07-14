@@ -21,3 +21,4 @@ gdrive/.venv/
 # Shopify import — never commit the Admin API access token
 shopify-import/.env
 shopify-import/import_results.csv
+shopify-import/data
