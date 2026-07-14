@@ -22,6 +22,22 @@ products as drafts, updates existing ones by title/description, and sets
 definitions (types: list.single_line_text_field, multi_line_text_field,
 single_line_text_field).
 
+**Translations (Polish):** if a row has "<Column> (PL)" companions (e.g.
+`Title (PL)`, `Description (PL)`, `Key features (PL)`) filled in, those get
+pushed as `pl` translations of the product/metafield content via
+`translationsRegister`. This is not active yet:
+
+- The sheet currently has no PL columns/content.
+- The app's Dev Dashboard scopes need `read_translations` +
+  `write_translations` added (confirmed missing — currently only product/
+  media scopes). Re-run the client_credentials exchange after adding them.
+- Polish is already enabled as a shop language in Settings → Languages, so
+  no store-side setup is needed once the scope and sheet content exist.
+
+Once those are in place, `python3 sheet_to_shopify.py --locale pl` (the
+default) will translate any row with PL columns filled in; rows without PL
+content are imported normally and skipped for translation.
+
 ```bash
 python3 sheet_to_shopify.py --dry-run     # show what would happen, no calls
 python3 sheet_to_shopify.py --limit 3     # test batch

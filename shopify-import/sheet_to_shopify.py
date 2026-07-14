@@ -3,15 +3,26 @@
 
 Reads the public CSV export of the sheet (SKU, Title, Description, ...) and
 creates/updates a Shopify product per row, setting title, description
-(Body HTML) and the variant SKU. Idempotent by SKU: an existing product with
-that SKU is updated rather than duplicated. New products are created as
-drafts, no price (fill those in later, e.g. via build_csv.py + Shopify's CSV
-import for the fuller metafield/image workflow).
+(Body HTML), the variant SKU and the product.metafields.custom.* fields.
+Idempotent by SKU: an existing product with that SKU is updated rather than
+duplicated. New products are created as drafts, no price (fill those in
+later, e.g. via build_csv.py + Shopify's CSV import for the fuller
+image workflow).
+
+Translations: if the sheet has "<Column> (PL)" companions (e.g. "Title (PL)",
+"Description (PL)", "Key features (PL)") for a row, those are pushed as
+Polish translations of the product/metafield content via
+translationsRegister. Requires the app to have the write_translations scope
+and Polish already enabled as a shop language (Settings -> Languages) —
+neither can be done from this script. Rows without PL columns filled in are
+imported without translations, so this is safe to run before PL content
+exists.
 
 Usage:
   python3 sheet_to_shopify.py --dry-run     # show what would happen, no calls
   python3 sheet_to_shopify.py --limit 3     # do only the first 3 (test batch)
   python3 sheet_to_shopify.py                # full run
+  python3 sheet_to_shopify.py --locale pl    # locale for translations (default pl)
 """
 import argparse, csv, io, json, os, sys, urllib.request, urllib.error, urllib.parse
 
@@ -89,6 +100,7 @@ def fetch_rows():
             "title": title,
             "body_html": body_html(row.get("Description") or "", row.get("More information") or ""),
             "metafields": metafields_from_row(row),
+            "translations": translations_from_row(row),
         })
     return products
 
@@ -113,6 +125,33 @@ def metafields_from_row(row):
             value = raw
         metafields.append({"namespace": namespace, "key": key, "type": mtype, "value": value})
     return metafields
+
+
+def translations_from_row(row):
+    """Polish translations, read from "<Column> (PL)" sheet columns if present.
+
+    Returns None when the sheet has no PL content for this row yet — the
+    caller then skips translation entirely instead of clearing existing ones.
+    """
+    pl_title = (row.get("Title (PL)") or "").strip()
+    pl_desc = row.get("Description (PL)") or ""
+    pl_more = row.get("More information (PL)") or ""
+    pl_body = body_html(pl_desc, pl_more) if (pl_desc.strip() or pl_more.strip()) else ""
+
+    pl_metafields = {}
+    for column, (_namespace, key, mtype) in METAFIELD_COLUMNS.items():
+        raw = (row.get(f"{column} (PL)") or "").strip()
+        if not raw:
+            continue
+        if mtype.startswith("list."):
+            value = json.dumps([line.strip() for line in raw.split("\n") if line.strip()])
+        else:
+            value = raw
+        pl_metafields[key] = value
+
+    if not (pl_title or pl_body or pl_metafields):
+        return None
+    return {"title": pl_title, "body_html": pl_body, "metafields": pl_metafields}
 
 
 class Shopify:
@@ -188,20 +227,69 @@ class Shopify:
             raise RuntimeError(str(errors))
 
     def set_metafields(self, product_id, metafields):
+        """Returns {key: metafield_gid} so translations can target them."""
         if not metafields:
-            return
+            return {}
         mutation = """
         mutation($metafields: [MetafieldsSetInput!]!) {
           metafieldsSet(metafields: $metafields) {
+            metafields { id key }
             userErrors { field message }
           }
         }
         """
         inputs = [{"ownerId": product_id, **m} for m in metafields]
         data = self.gql(mutation, {"metafields": inputs})
-        errors = data["metafieldsSet"]["userErrors"]
+        result = data["metafieldsSet"]
+        if result["userErrors"]:
+            raise RuntimeError(str(result["userErrors"]))
+        return {m["key"]: m["id"] for m in result["metafields"]}
+
+    def translatable_digests(self, resource_id):
+        query = """
+        query($id: ID!) {
+          translatableResource(resourceId: $id) {
+            translatableContent { key digest }
+          }
+        }
+        """
+        data = self.gql(query, {"id": resource_id})
+        res = data["translatableResource"]
+        return {c["key"]: c["digest"] for c in res["translatableContent"]} if res else {}
+
+    def register_translations(self, resource_id, locale, fields):
+        """fields: {key: value}. Skips keys with no matching translatable content."""
+        digests = self.translatable_digests(resource_id)
+        translations = [
+            {"locale": locale, "key": key, "value": value, "translatableContentDigest": digests[key]}
+            for key, value in fields.items() if key in digests
+        ]
+        if not translations:
+            return
+        mutation = """
+        mutation($resourceId: ID!, $translations: [TranslationInput!]!) {
+          translationsRegister(resourceId: $resourceId, translations: $translations) {
+            userErrors { field message }
+          }
+        }
+        """
+        data = self.gql(mutation, {"resourceId": resource_id, "translations": translations})
+        errors = data["translationsRegister"]["userErrors"]
         if errors:
             raise RuntimeError(str(errors))
+
+    def translate_product(self, product_id, metafield_ids, locale, translations):
+        product_fields = {}
+        if translations.get("title"):
+            product_fields["title"] = translations["title"]
+        if translations.get("body_html"):
+            product_fields["body_html"] = translations["body_html"]
+        if product_fields:
+            self.register_translations(product_id, locale, product_fields)
+        for key, value in translations.get("metafields", {}).items():
+            mf_id = metafield_ids.get(key)
+            if mf_id:
+                self.register_translations(mf_id, locale, {"value": value})
 
     def update_product(self, product_id, title, body_html):
         mutation = """
@@ -223,6 +311,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--locale", default="pl", help="Locale to write translations for (default: pl)")
     args = ap.parse_args()
 
     products = fetch_rows()
@@ -231,7 +320,8 @@ def main():
 
     if args.dry_run:
         for p in products:
-            print(f"{p['sku']:>10}  {p['title']}  metafields={len(p['metafields'])}")
+            tr = "yes" if p["translations"] else "-"
+            print(f"{p['sku']:>10}  {p['title']}  metafields={len(p['metafields'])}  translations={tr}")
         print(f"\n{len(products)} products would be imported.")
         return
 
@@ -249,7 +339,9 @@ def main():
             else:
                 product_id = shop.create_product(p["title"], p["body_html"], sku)
                 action = "created"
-            shop.set_metafields(product_id, p["metafields"])
+            metafield_ids = shop.set_metafields(product_id, p["metafields"])
+            if p["translations"]:
+                shop.translate_product(product_id, metafield_ids, args.locale, p["translations"])
             results.append((sku, action, product_id, ""))
             print(f"[{i}/{len(products)}] {sku}: {action} ({product_id})")
         except Exception as e:
