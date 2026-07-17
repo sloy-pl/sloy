@@ -63,6 +63,27 @@ python3 export_translations.py --locale pl
 python3 export_translations.py --out-prefix data/corpus
 ```
 
+### `translate_products.py`
+
+Translates newly-imported products (EN -> PL) and pushes the result via
+`translationsRegister`. The actual translation is done by hand (or by an
+LLM) following `pl-translation-style-guide.md` — this script only handles
+the Shopify side (finding what's untranslated, and writing translations
+back).
+
+```bash
+python3 translate_products.py --export        # -> data/to_translate.json
+#   ... fill in the "pl" fields for each product, per the style guide ...
+python3 translate_products.py --push           # reads data/to_translate.json
+```
+
+`--export` finds every product with no PL `title` translation yet (so it's
+safe to re-run — already-translated products are skipped) and writes their
+EN title/body_html/handle plus the "Title" product-option resource to
+`data/to_translate.json` with empty `pl` fields. Fill those in, then
+`--push` registers them. Re-run `--export` any time new products are
+imported to pick up the next batch.
+
 ### `list_products.py`
 
 Lists the titles of every product currently in the store (paginates
