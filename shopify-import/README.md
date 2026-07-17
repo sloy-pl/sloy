@@ -84,6 +84,24 @@ EN title/body_html/handle plus the "Title" product-option resource to
 `--push` registers them. Re-run `--export` any time new products are
 imported to pick up the next batch.
 
+### `translate_metafields.py`
+
+Same workflow as `translate_products.py`, but for the custom metafields
+(Key features, Condition, Dimensions, Perfect for, Shipping & pickup, SLOY
+quality standard, Designer, Manufacturer) instead of title/body_html/handle,
+and scoped to products currently in `DRAFT` status (the recently-imported
+batch not yet reviewed/published).
+
+```bash
+python3 translate_metafields.py --export        # -> data/to_translate_metafields.json
+#   ... fill in the "pl" fields per the style guide ...
+python3 translate_metafields.py --push           # reads data/to_translate_metafields.json
+```
+
+List-type metafields (`key_features`, `dimensions`, `perfect_for`,
+`shipping_pickup`) are JSON-array-shaped strings — keep the `pl` value a
+valid JSON array with the same number of items as `en`.
+
 ### `list_products.py`
 
 Lists the titles of every product currently in the store (paginates
