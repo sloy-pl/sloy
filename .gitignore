@@ -15,6 +15,8 @@ warehouse/__pycache__/
 # Google Drive access — never commit the service account key or .env
 gdrive/.env
 gdrive/service-account.json
+gdrive/client_secret.json
+gdrive/token.json
 gdrive/__pycache__/
 gdrive/.venv/
 

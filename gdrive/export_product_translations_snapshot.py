@@ -7,13 +7,25 @@ store (title, body_html, handle, seo, options, translatable metafields...),
 then creates a new Google Sheet inside a shared Drive folder and writes the
 rows to it. The sheet's name is the run timestamp in Europe/Berlin time.
 
-Setup:
-- gdrive/.env: GOOGLE_SERVICE_ACCOUNT_FILE (see gdrive/.env.example).
-- shopify-import/.env: Shopify Admin API credentials (SHOPIFY_STORE,
-  SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET), same as export_translations.py.
-- The target Drive folder must be shared as Editor (not just Viewer) with
-  the service account's email — creating a file needs write access, unlike
-  list_files.py's read-only listing.
+Auth: OAuth as your own Google user, not a service account. A service
+account has 0 bytes of its own Drive storage, so file-creation calls fail
+with storageQuotaExceeded even when your personal Drive has plenty of
+space (see git log / PR discussion). Authenticating as you means new files
+are owned by your account and count against your normal quota.
+
+One-time setup:
+1. In the Google Cloud project that has the Drive API + Sheets API enabled
+   (Google Cloud Console -> APIs & Services -> Library, enable both),
+   go to APIs & Services -> Credentials -> Create Credentials ->
+   OAuth client ID -> Application type "Desktop app". Download the JSON
+   and save it as gdrive/client_secret.json (or point
+   GOOGLE_OAUTH_CLIENT_FILE at it in gdrive/.env).
+2. Make sure the OAuth consent screen is in "Testing" mode with your own
+   Google account added as a test user (no Google verification needed for
+   personal use).
+3. Run this script. The first run opens a browser for you to sign in and
+   consent; the resulting token is cached in gdrive/token.json (gitignored)
+   and auto-refreshed after that, so later runs don't prompt again.
 
 Usage:
   python3 export_product_translations_snapshot.py
@@ -27,7 +39,9 @@ import sys
 from zoneinfo import ZoneInfo
 
 from dotenv import load_dotenv
-from google.oauth2 import service_account
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -39,20 +53,42 @@ from sheet_to_shopify import Shopify, load_env as load_shopify_env  # noqa: E402
 
 load_dotenv(os.path.join(ROOT, ".env"))
 
+# drive.file: only files this app creates/opens, not full Drive read/write.
 SCOPES = [
-    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/spreadsheets",
 ]
+TOKEN_FILE = os.path.join(ROOT, "token.json")
 # https://drive.google.com/drive/folders/1AOyI9fKLObpb4LTUp-4wa5RtdO_6dg7b
 DEFAULT_FOLDER_ID = "1AOyI9fKLObpb4LTUp-4wa5RtdO_6dg7b"
 HEADER = ["resource_type", "resource_id", "key", "source_locale", "en", "pl"]
 
 
 def google_credentials():
-    key_file = os.environ["GOOGLE_SERVICE_ACCOUNT_FILE"]
-    if not os.path.isabs(key_file):
-        key_file = os.path.join(ROOT, key_file)
-    return service_account.Credentials.from_service_account_file(key_file, scopes=SCOPES)
+    creds = None
+    if os.path.exists(TOKEN_FILE):
+        creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
+
+    if creds and creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+
+    if not creds or not creds.valid:
+        client_file = os.environ.get("GOOGLE_OAUTH_CLIENT_FILE", "./client_secret.json")
+        if not os.path.isabs(client_file):
+            client_file = os.path.join(ROOT, client_file)
+        if not os.path.exists(client_file):
+            sys.exit(
+                f"Missing OAuth client file at {client_file}. Download it from "
+                "Cloud Console (Credentials -> OAuth client ID -> Desktop app) "
+                "and save it there, or set GOOGLE_OAUTH_CLIENT_FILE in gdrive/.env."
+            )
+        flow = InstalledAppFlow.from_client_secrets_file(client_file, SCOPES)
+        creds = flow.run_local_server(port=0)
+
+    with open(TOKEN_FILE, "w", encoding="utf-8") as f:
+        f.write(creds.to_json())
+
+    return creds
 
 
 def berlin_timestamp():
