@@ -56,6 +56,13 @@
           "type": "price",
           "settings": {}
         },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
         "custom_liquid_UfijWV": {
           "type": "custom_liquid",
           "settings": {
@@ -164,6 +171,7 @@
         "vendor",
         "title",
         "price",
+        "buy_buttons",
         "custom_liquid_UfijWV",
         "seowill_trust_badges_star_rating_WXVz4H",
         "description_QPAWhG",
