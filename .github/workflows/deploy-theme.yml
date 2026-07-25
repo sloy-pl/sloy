@@ -32,4 +32,4 @@ jobs:
       - name: Theme Check
         run: shopify theme check --path theme
       - name: Push to live theme
-        run: shopify theme push --path theme --theme "${{ secrets.SHOPIFY_THEME_ID }}"
+        run: shopify theme push --path theme --theme "${{ secrets.SHOPIFY_THEME_ID }}" --allow-live
