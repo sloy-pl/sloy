@@ -106,20 +106,13 @@
                   </a>
                 </div>
               {%- when 'price' -%}
-                {%- liquid
-                  assign price_variant = product.selected_or_first_available_variant
-                  assign hide_sold_out_badge = false
-                  if price_variant.available == false and price_variant.inventory_quantity > 0
-                    assign hide_sold_out_badge = true
-                  endif
-                -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                   {%- render 'price',
                     product: product,
                     use_variant: true,
                     show_badges: true,
                     price_class: 'price--large',
-                    hide_sold_out_badge: hide_sold_out_badge
+                    hide_sold_out_badge: true
                   -%}
                 </div>
                 {%- if product.quantity_price_breaks_configured? -%}
