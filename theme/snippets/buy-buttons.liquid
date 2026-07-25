@@ -71,9 +71,7 @@
             endif
 
             assign is_unavailable = false
-            if product.selected_or_first_available_variant.available == false
-              or quantity_rule_soldout
-              or product.selected_or_first_available_variant == null
+            if product.selected_or_first_available_variant.available == false or quantity_rule_soldout or product.selected_or_first_available_variant == null
               assign is_unavailable = true
             endif
           -%}
