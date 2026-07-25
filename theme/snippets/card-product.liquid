@@ -39,20 +39,17 @@
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
-    assign shipping_pickup = card_product.metafields.custom.shipping_pickup.value
+    assign shipping_pickup_str = card_product.metafields.custom.shipping_pickup.value | join: '|'
+    assign has_priced_shipping = false
+    if shipping_pickup_str contains 'zł'
+      assign has_priced_shipping = true
+    endif
     assign hide_sold_out_badge = false
-    if card_product.available == false and shipping_pickup contains 'Contact us before purchase for a shipping quote'
+    if card_product.available == false and shipping_pickup_str != blank and has_priced_shipping == false
       assign hide_sold_out_badge = true
     endif
   -%}
-  <div
-    class="card-wrapper product-card-wrapper underline-links-hover"
-    data-debug-sku="{{ card_product.selected_or_first_available_variant.sku }}"
-    data-debug-available="{{ card_product.available }}"
-    data-debug-mf="{{ shipping_pickup | join: '|' }}"
-    data-debug-mf-size="{{ shipping_pickup.size }}"
-    data-debug-hide="{{ hide_sold_out_badge }}"
-  >
+  <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div
       class="
         card card--{{ settings.card_style }}
