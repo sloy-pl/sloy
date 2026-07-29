@@ -30,6 +30,9 @@
   if hide_sold_out_badge
     assign available = true
   endif
+  if price == 0
+    assign available = false
+  endif
   assign money_price = price | money
   assign money_price_min = price_min | money
   assign money_price_max = price_max | money

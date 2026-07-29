@@ -48,6 +48,7 @@
           name="id"
           value="{{ product.selected_or_first_available_variant.id }}"
           {% if product.selected_or_first_available_variant.available == false
+            or product.selected_or_first_available_variant.price == 0
             or quantity_rule_soldout
             or product.selected_or_first_available_variant == null
           %}
@@ -71,7 +72,7 @@
             endif
 
             assign is_unavailable = false
-            if product.selected_or_first_available_variant.available == false or quantity_rule_soldout or product.selected_or_first_available_variant == null
+            if product.selected_or_first_available_variant.available == false or product.selected_or_first_available_variant.price == 0 or quantity_rule_soldout or product.selected_or_first_available_variant == null
               assign is_unavailable = true
             endif
           -%}
@@ -87,7 +88,7 @@
             <span>
               {%- if product.selected_or_first_available_variant == null -%}
                 {{ 'products.product.unavailable' | t }}
-              {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+              {%- elsif product.selected_or_first_available_variant.available == false or product.selected_or_first_available_variant.price == 0 or quantity_rule_soldout -%}
                 {{ 'products.product.sold_out' | t }}
               {%- else -%}
                 {{ 'products.product.add_to_cart' | t }}
